@@ -1,0 +1,13 @@
+.App{
+    scroll-behavior: smooth;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    flex-shrink: 0;
+}
+
+.content {
+    flex: 1 0 auto;
+    /* margin-bottom:50px; */
+  }

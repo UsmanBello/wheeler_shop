@@ -1,0 +1,13 @@
+.productfilter__side{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+@media (max-width: 950px) {
+    .productfilter__side{
+        display: none;
+    }
+}
+
+

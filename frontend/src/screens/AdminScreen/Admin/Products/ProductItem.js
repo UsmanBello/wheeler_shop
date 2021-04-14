@@ -1,0 +1,33 @@
+// import './Products.css'
+
+const ProductItem =({product, handleEditToggle, handleDeleteToggle}) => {
+    return (
+                 <tr className="table__row">
+                                            <td></td>
+                                     <td>{product.name}</td>
+                                     <td className='hide__at__mobile'>
+                                     <img src={product.imageUrl}
+                                          alt={product.name}/>
+                                     </td>
+                                     <td>{product.price}</td>
+                                     <td>{product.countInStock}</td>
+                                     <td className='hide__at__mobile'>{product.brand}</td>
+                                     <td>{product.category}</td>
+                                     <td className='admin__actions__container'>
+                                             <button className='admin__edit__button' 
+                                             onClick={()=>handleEditToggle(product)}>
+                                             <i className="fas fa-edit" aria-hidden="true"/>
+                                             </button>{' '}
+                                             <button className='admin__delete__button'
+                                             onClick={()=>handleDeleteToggle(product)}>
+                                             <i className="fas fa-trash" aria-hidden="true"/>
+                                             </button>
+                                        
+                                     </td>
+                                     
+                                 </tr>
+                                
+    )
+  }
+  
+  export default ProductItem;

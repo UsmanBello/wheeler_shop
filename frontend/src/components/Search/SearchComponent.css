@@ -1,0 +1,30 @@
+.search{
+    display: flex;
+    width: 100%;
+    height: 45px;
+    border-radius: 5pxs;
+}
+.search__input__bar{
+   flex: 0.85;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #171717;
+}
+.search__input__bar:focus,
+.search__input__bar:active{
+    outline: none;
+}
+
+.search__button{
+    flex: 0.15;
+    background-color: #171717;
+    border:  none;
+}
+.search__button > .fa-search{
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: white;
+}
+/* .search__button{
+    padding: 0px 10px;
+} */

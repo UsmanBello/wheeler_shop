@@ -1,0 +1,46 @@
+.sticky__sidebar{
+ margin-left: 20px;
+ margin-top: 20px;
+ padding: 0 10px;
+
+}
+
+.stick{
+position: fixed;
+top:auto;
+}
+.adminscreen__menu{
+    list-style: none;
+}
+
+.side__menu__item{
+    margin:10px auto;
+}
+
+.side__menu__item:hover{
+    cursor: pointer;
+    color: rgb(2, 117, 216);
+}
+
+.admin__menu  .fa{
+    color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    
+}
+.side__menu__item:hover > .fa{
+    color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgb(2, 117, 216);
+}
+.active{
+    color:rgb(2, 117, 216);
+}
+.active > .fa{
+    
+    color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color:rgb(2, 117, 216);/*#29b8ff*/
+}
+
+  

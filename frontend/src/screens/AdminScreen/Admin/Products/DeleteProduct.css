@@ -1,0 +1,33 @@
+.delete__product__modal{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+.delete__modal__messae__container{
+    margin: 10px 0px;
+    padding:10px 5px;
+    text-align: center;
+}
+
+.delete__modal__actions{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.modal__cancel__button{
+ padding: 10px;
+ border:none;
+ color: white;
+ background-color: #83858a;
+ border-radius: 5px;
+}
+
+.modal__delete__button{
+    padding: 10px;
+    border:none;
+    color: white;
+    background-color: #f2411d;
+    border-radius: 5px;
+}
+

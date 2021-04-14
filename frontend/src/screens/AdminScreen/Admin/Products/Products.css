@@ -1,0 +1,79 @@
+.products{
+    width:100%;
+    margin-top: 20px;
+}
+
+.products__header{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+}
+.products__header button{
+    background-color: 	rgb(2, 117, 216);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    border:none;
+    cursor: pointer;
+}
+
+.products__table__container{
+    margin-top: 20px;
+    width: 100%;
+}
+/* .products__table__container__mobile{
+    display: none;
+  }
+.table__row__mobile{
+    display: none;
+} */
+.products__table{
+    width: 100%;
+}
+.products__table thead tr th{
+  height: 30px;
+  border-top: 1px solid #797a7a;
+  border-bottom: 1px solid #797a7a;
+}
+
+.products__table tbody tr{
+    height: 80px;
+}
+.products__table tbody tr td{
+    text-align: center;
+}
+.products__table tbody tr:nth-child(odd){
+ background-color: #dbdbdb;
+}
+
+.admin__edit__button{
+    background-color: rgb(92, 184, 92);
+    padding:5px;
+    color:white;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.admin__delete__button{
+    background-color: 	rgb(217, 83, 79);
+    padding:6px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+@media (max-width: 700px) {
+    .hide__at__mobile{
+        display: none;
+    }
+    .same{
+        width:18%;
+    }
+
+}
+@media (max-width: 700px){
+    .products{
+        font:0.5rem;
+    }
+}

@@ -1,0 +1,9 @@
+.productfilter__mobile{
+    display: none;
+}
+
+@media (max-width: 950px) {
+    .productfilter__mobile{
+        display: flex;
+    }
+}
