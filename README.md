@@ -1,5 +1,5 @@
 # wheeler_shop
-An E-commerce platform to sell JEEP wrangler parts.(MERN)
+(MERN) An E-commerce platform to sell JEEP wrangler parts.
 
 This is an e-commerce platform
 
