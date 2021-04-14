@@ -10,6 +10,7 @@ exports.createProduct = async function(req,res){
                                                      price: req.body.price,
 													 description: req.body.description,
 													 productId: req.body.productId,
+													 brand: req.body.brand,
                                                      countInStock: req.body.countInStock,
                                                      imageUrl: req.body.imageUrl,
                                                      category: req.body.category
