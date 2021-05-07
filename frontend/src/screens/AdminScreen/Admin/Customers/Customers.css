@@ -1,0 +1,115 @@
+.customers{
+    width:100%;
+    margin-top: 20px;
+}
+
+.customers__header{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+}
+.customers__table__container{
+    margin-top: 20px;
+    width: 100%;
+}
+.customers__table{
+    width: 100%;
+}
+.customers__table thead tr th{
+  height: 30px;
+  border-top: 1px solid #797a7a;
+  border-bottom: 1px solid #797a7a;
+}
+
+.customers__table tbody tr{
+    height: 80px;
+}
+.customers__table tbody tr td{
+    text-align: center;
+}
+.customers__table tbody tr:nth-child(odd){
+ background-color: #dbdbdb;
+}
+
+.admin__edit__button{
+    background-color: rgb(92, 184, 92);
+    padding:5px;
+    color:white;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.admin__delete__button{
+    background-color: 	rgb(217, 83, 79);
+    padding:6px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.found__results{
+    margin-top: 20px;
+    text-align: center;
+}
+.clear__Search{
+    color:purple;
+    cursor: pointer;
+}
+/* .admin__products__filter{
+    width: 100%;
+    margin-top: 15px;
+} */
+
+/*======PAGE COMPONENT TO BE TRANSFERED=======*/
+.page__component__container{
+    margin: 20px auto;
+}
+.pagination__btns{
+    width: 80%;
+    height: 40px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+.pagination__btns a {
+    padding: 10px;
+    margin: 3px;
+    border:1px solid black;
+    border-radius: 5px;
+    color: black;
+    cursor: pointer;
+}
+.pagination__btns a:hover{
+    background-color: black;
+    color: white;
+}
+.pagination__active a{
+    background-color: black;
+    color: white;
+} 
+@media (max-width: 700px) {
+    .products__header{
+        display: flex;
+        flex-direction: column;
+        /* justify-content: space-around; */
+    }
+    /* .products__header .add__button{
+        align-self: start;
+    } */
+    /* .products__header .search__container{
+        margin-top: 10px;
+    } */
+    /* .hide__at__mobile{
+        display: none;
+    }
+    .same{
+        width:18%;
+    } */
+
+}
+@media (max-width: 700px){
+    .orders{
+        font:0.5rem;
+    }
+}

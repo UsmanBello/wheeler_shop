@@ -5,6 +5,7 @@ const express= require('express'),
 	  
 	  { getProducts,
         getProduct,
+		getProductsCount,
         updateProduct,
 	    createProduct,
 		deleteProduct, 
@@ -15,6 +16,11 @@ router.route("/")
 .get(getProducts)
 .post(createProduct)
 .delete(deleteManyProducts);
+
+router.route("/totalProducts")
+.get(getProductsCount)
+
+
 
 
 router.route("/:productId")

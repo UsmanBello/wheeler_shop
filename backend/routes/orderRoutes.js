@@ -5,6 +5,8 @@ const express= require('express'),
 	  
 	  { getOrders,
         getOrder,
+		getOrdersCount,
+		getCustomerOrders,
 	    createOrder,
         updateOrder,
 		deleteOrder, 
@@ -16,6 +18,11 @@ router.route("/")
 .post(createOrder)
 .delete(deleteManyOrders);
 
+router.route("/totalOrders")
+.get(getOrdersCount)
+
+router.route('/customer/:customerId')
+.get(getCustomerOrders)
 
 router.route("/:orderId")
 .get(getOrder)

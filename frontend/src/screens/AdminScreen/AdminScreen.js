@@ -1,34 +1,39 @@
 import './AdminScreen.css'
-import{ useState} from 'react'
+import{ useState, useEffect} from 'react'
+import queryString from 'query-string'
 
 //Components
 import SideNav from './Admin/Nav/SideNav';
 import Products from './Admin/Products/Products';
+import Orders from './Admin/Orders/Orders';
+import Customers from './Admin/Customers/Customers';
 import MobileNav from './Admin/Nav/MobileNav';
+import { extractTerm } from '../../utils/helpers';
 
-const AdminScreen =() => {
+const AdminScreen =({location, history}) => {
+
+  // console.log(location)
+  const { search }  = location
+  const queryParams = queryString.parse(search)
+  const currentAdminOption = extractTerm(queryParams.admin_option)
+
 const [showMobileMenu, setShowMobileMenu]= useState(false)
-const [activeNav, setActiveNav]= useState('dashboard')
-const [active, setActive]= useState({
-  dashboard: true,
-  orders: false,
-  products: false,
-  brands: false,
-  categories: false,
-  customers: false})
- 
+const [activeNav, setActiveNav]= useState(currentAdminOption)
+
+  useEffect(()=>{
+    var newQueryParams= {
+      ...queryParams,
+      admin_option: activeNav
+    }
+    history.push({
+      pathname: '/admin',
+      search: queryString.stringify(newQueryParams)
+    })
+
+  },[activeNav])
  
   const handleNavigationClick=(option)=>{
-      
-       setActive({dashboard: option==='dashboard', 
-                  orders: option=== 'orders',
-                  products: option=== 'products',
-                  brands: option=== 'brands',
-                  categories: option==='categories', 
-                  customers: option=== 'customers'
-                  })
-        setActiveNav(option)
-   
+      setActiveNav(option)
   }
   
 
@@ -38,7 +43,7 @@ const [active, setActive]= useState({
          <div className="adminscreen__left" id='sticky__left'>
              <SideNav 
              handleNavigationClick={handleNavigationClick}
-             active={activeNav}/>
+             active={activeNav===''? 'dashboard': activeNav}/>
          </div>
          <div className="adminscreen__right">
            <div className='adminscreen__right__header'>
@@ -49,12 +54,10 @@ const [active, setActive]= useState({
              handleToggleMobileNav={()=>setShowMobileMenu(!showMobileMenu)}
              showMobileMenu={showMobileMenu}/>
            </div>
-              {active.dashboard && <div><h1>LIST OF ADMINS GOES HERE</h1></div>}
-              {active.orders &&  <div><h1>ORDERS GOES HERE</h1></div>}
-              {active.products &&  <Products/>}
-              {active.brands && <div><h1>LIST OF BRANDS GOES HERE</h1></div>}
-              {active.categories &&  <div><h1>LIST CATEGORIES GOES HERE</h1></div>}
-              {active.customers && <div><h1>LIST OF CUSTOMERS GOES HERE</h1></div>}
+              {(currentAdminOption==='' || activeNav==='dashboard') && <div><h1>LIST OF ADMINS GOES HERE</h1></div>}
+              {activeNav==='orders' && <Orders location={location} history={history}/>}
+              {activeNav==='products' &&  <Products location={location} history={history}/>}
+              {activeNav==='customers' && <Customers location={location} history={history}/>}
          </div>
        </div>
     );

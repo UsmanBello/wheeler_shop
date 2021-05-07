@@ -1,12 +1,11 @@
 import './Product.css';
 import {Link} from 'react-router-dom';
-const  Product=( {imageUrl, name, price, description, productId})=> {
+const  Product=( {image, name, price, description, productId})=> {
 
   return (
     <div className='product'>
-        <img src={imageUrl}
+        <img src={image}
          alt={name}/>
-
         <div className='product__info'>
             <p className='info__name'>{name}</p>
             <p className='info__description'>{description.substring(0, 100)}...</p>

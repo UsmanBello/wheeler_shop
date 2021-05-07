@@ -6,13 +6,13 @@ const ProductItem =({product, handleEditToggle, handleDeleteToggle}) => {
                                             <td></td>
                                      <td>{product.name}</td>
                                      <td className='hide__at__mobile'>
-                                     <img src={product.imageUrl}
+                                     <img src={product.images[0].image}
                                           alt={product.name}/>
                                      </td>
                                      <td>{product.price}</td>
                                      <td>{product.countInStock}</td>
                                      <td className='hide__at__mobile'>{product.brand}</td>
-                                     <td>{product.category}</td>
+                                     <td>{product.category.split('_').join(' ')}</td>
                                      <td className='admin__actions__container'>
                                              <button className='admin__edit__button' 
                                              onClick={()=>handleEditToggle(product)}>

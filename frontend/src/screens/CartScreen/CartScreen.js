@@ -55,7 +55,7 @@ const getCartSubTotal = () => {
                   <p>$ {getCartSubTotal()}</p>
               </div>
               <div>
-                <button>Proceed To Checkout</button>
+                <button onClick={()=>history.push('/checkout')}>Proceed To Checkout</button>
               </div>
         </div>
     </div>

@@ -7,6 +7,7 @@ import ShopScreen from "../../screens/ShopScreen/ShopScreen";
 import ProductScreen from "../../screens/ProductScreen/ProductScreen";
 import CartScreen from "../../screens/CartScreen/CartScreen";
 import AdminScreen from "../../screens/AdminScreen/AdminScreen";
+import CheckoutScreen from "../../screens/CheckoutScreen/CheckoutScreen";
 
 function Main() {
 
@@ -19,6 +20,7 @@ function Main() {
           <Route exact path="/product/:id" component={ProductScreen} />
           <Route exact path="/cart" component={CartScreen} />
           <Route exact path="/admin" component={AdminScreen} />
+          <Route exact path="/checkout" component={CheckoutScreen}/>
         </Switch>
      </main>
     

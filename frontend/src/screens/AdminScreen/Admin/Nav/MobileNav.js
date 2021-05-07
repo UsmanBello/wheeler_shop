@@ -24,7 +24,7 @@ const MobileNav =({handleNavigationClick, active, handleToggleMobileNav, showMob
                                 <i className="fa fa-shopping-cart" aria-hidden="true"/>{' '}
                                 Products
                         </li>
-                        <li className={active=== 'brands' ? 'mobile__menu__item active' : 'mobile__menu__item'}
+                        {/* <li className={active=== 'brands' ? 'mobile__menu__item active' : 'mobile__menu__item'}
                         onClick={()=>handleNavigationClick('brands')}>
                                 <i className="fa fa-shopping-cart" aria-hidden="true"/>{' '}{' '}
                                 Brands
@@ -33,12 +33,11 @@ const MobileNav =({handleNavigationClick, active, handleToggleMobileNav, showMob
                         onClick={()=>handleNavigationClick('categories')}>
                             <i className="fa fa-shopping-cart" aria-hidden="true"/>{' '}
                             Categories
-                        </li>
+                        </li> */}
                         <li className={active==='customers' ? 'mobile__menu__item active' : 'mobile__menu__item'}
                         onClick={()=>handleNavigationClick('customers')}>
                              <i className="fa fa-users" aria-hidden="true"/>{' '}
                             Customers
-                           
                         </li>
     </ul>}
     </div>

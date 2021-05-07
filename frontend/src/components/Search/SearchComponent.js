@@ -1,5 +1,4 @@
 import './SearchComponent.css';
-import { useState } from 'react';
 
 const SearchComponent= ({handleSearch, searchInput, handleSearchChange, handleKeyDown}) =>{
     

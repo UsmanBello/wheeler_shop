@@ -34,8 +34,15 @@
 .edit__product__form__row label{
     margin-bottom: 5px;
 }
+
 .edit__product__form__column{
     flex: 0.5;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.edit__product__form__column__half{
+    flex: 0.25;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -78,7 +85,8 @@
     flex-direction: column;
     /* justify-content: space-between; */
  }
- .edit__product__form__column{
+ .edit__product__form__column,
+ .edit__product__form__column__half{
      flex:1;
  }
 }

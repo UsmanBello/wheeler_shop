@@ -1,7 +1,7 @@
 import './Navbar.css';
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import Logo from '../../images/logoS.jpeg'
 
 function Navbar({click}) {
     const cart = useSelector((state) => state.cart);
@@ -15,7 +15,7 @@ function Navbar({click}) {
     <nav className='navbar'>
         <div className="navbar__logo">
           <Link to={'/'}>
-             <h2>SALWAN</h2>
+            <img src={Logo} alt='Salwan auto'/>
         </Link>
       </div>
 

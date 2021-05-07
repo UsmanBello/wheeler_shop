@@ -1,0 +1,21 @@
+.items__ordered__container{
+    margin-top: 20px;
+    width: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Item__table{
+    width: 80%
+}
+.Item__table thead tr th{
+    height: 30px;
+    border-top: 1px solid #797a7a;
+    border-bottom: 1px solid #797a7a;
+}
+.Item__table tbody tr{
+    height: 30px;
+}
+.Item__table tbody tr td{
+    text-align: center;
+}

@@ -8,8 +8,11 @@
     display: flex;
     justify-content: space-between;
 }
-.products__header button{
-    background-color: 	rgb(2, 117, 216);
+.products__header .search__container{
+    flex: 0.6
+}
+.products__header .add__button{
+    background-color: 	#171717;
     color: white;
     padding: 10px;
     border-radius: 5px;
@@ -19,6 +22,7 @@
 
 .products__table__container{
     margin-top: 20px;
+    /* margin-bottom: 20px; */
     width: 100%;
 }
 /* .products__table__container__mobile{
@@ -63,7 +67,58 @@
     border-radius: 2px;
 }
 
+.no__results{
+    margin-top: 20px;
+    text-align: center;
+}
+.clear__Search{
+    color:purple;
+    cursor: pointer;
+}
+.admin__products__filter{
+    width: 100%;
+    margin-top: 15px;
+}
+
+/*======PAGE COMPONENT TO BE TRANSFERED=======*/
+.page__component__container{
+    margin: 20px auto;
+}
+.pagination__btns{
+    width: 80%;
+    height: 40px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+.pagination__btns a {
+    padding: 10px;
+    margin: 3px;
+    border:1px solid black;
+    border-radius: 5px;
+    color: black;
+    cursor: pointer;
+}
+.pagination__btns a:hover{
+    background-color: black;
+    color: white;
+}
+.pagination__active a{
+    background-color: black;
+    color: white;
+} 
 @media (max-width: 700px) {
+    .products__header{
+        display: flex;
+        flex-direction: column;
+        /* justify-content: space-around; */
+    }
+    .products__header .add__button{
+        align-self: start;
+    }
+    .products__header .search__container{
+        margin-top: 10px;
+    }
     .hide__at__mobile{
         display: none;
     }

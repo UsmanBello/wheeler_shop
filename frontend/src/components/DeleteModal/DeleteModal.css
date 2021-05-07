@@ -1,4 +1,4 @@
-.delete__product__modal{
+.delete__modal{
     display: flex;
     flex-direction: column;
     width: 250px;
@@ -30,4 +30,3 @@
     background-color: #f2411d;
     border-radius: 5px;
 }
-

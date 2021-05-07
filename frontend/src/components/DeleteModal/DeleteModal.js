@@ -1,11 +1,10 @@
-import './DeleteProduct.css'
+import './DeleteModal.css'
 import Modal  from "react-modal";
 
 
 Modal.setAppElement("#root");
 
-const DeleteProduct =({show, handleDelete, cancel,id}) => {
-
+const DeleteModal =({show, handleDelete, cancel,id, toDelete}) => {
 
     return ( 
                         <Modal 
@@ -16,10 +15,10 @@ const DeleteProduct =({show, handleDelete, cancel,id}) => {
 							overlayClassName="myoverlay"
 							closeTimeoutMS={100}
 							 >
-							<div className='delete__product__modal'>
+							<div className='delete__modal'>
                                <div className='delete__modal__messae__container'>
                                    <p className='delete__modal__message'>
-                                        Are you sure you want to delete this product?
+                                        Are you sure you want to delete this {`${toDelete}`}?
                                    </p>
                                </div>
                             </div>
@@ -40,4 +39,4 @@ const DeleteProduct =({show, handleDelete, cancel,id}) => {
     )
   }
   
-  export default DeleteProduct;
+  export default DeleteModal;

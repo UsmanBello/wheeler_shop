@@ -9,7 +9,7 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
     payload: {
       product: data._id,
       name: data.name,
-      imageUrl: data.imageUrl,
+      image: data.images[0].image,
       price: data.price,
       countInStock: data.countInStock,
       qty,
@@ -27,3 +27,13 @@ export const removeFromCart = (id) => (dispatch, getState) => {
 
   localStorage.setItem("cart", JSON.stringify(getState().cart.cartItems));
 };
+
+export const emptyCart = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.EMPTY_CART
+  });
+
+  localStorage.removeItem("cart");
+};
+
+

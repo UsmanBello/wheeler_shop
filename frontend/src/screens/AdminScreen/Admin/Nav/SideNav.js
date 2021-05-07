@@ -21,7 +21,7 @@ const SideNav =({handleNavigationClick, active}) => {
                                 <i className="fa fa-shopping-cart" aria-hidden="true"/>{' '}
                                 Products
                         </li>
-                        <li className={active=== 'brands' ? 'side__menu__item active' : 'side__menu__item'}
+                        {/* <li className={active=== 'brands' ? 'side__menu__item active' : 'side__menu__item'}
                         onClick={()=>handleNavigationClick('brands')}>
                                 <i className="fa fa-shopping-cart" aria-hidden="true"/>{' '}{' '}
                                 Brands
@@ -30,7 +30,7 @@ const SideNav =({handleNavigationClick, active}) => {
                         onClick={()=>handleNavigationClick('categories')}>
                             <i className="fa fa-shopping-cart" aria-hidden="true"/>{' '}
                             Categories
-                        </li>
+                        </li> */}
                         <li className={active==='customers' ? 'side__menu__item active' : 'side__menu__item'}
                         onClick={()=>handleNavigationClick('customers')}>
                              <i className="fa fa-users" aria-hidden="true"/>{' '}

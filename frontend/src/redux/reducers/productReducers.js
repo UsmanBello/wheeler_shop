@@ -1,18 +1,26 @@
 import * as actionTypes from "../constants/productConstants";
-export const product = (state = { products: [], product: {}, loading: true, error: '' }, action) => {
+export const product = (state = {
+   products: {fetchedProducts: [], count:0},
+  productsCount: 0,
+   product: {name:'', description: '', price: 0, brand:'', countInStock: 0, productId: '', images: [], category: '', subCategory: '', sales: 0},
+   brands: [],
+    loading: true, 
+    error: '' },
+     action) => {
+
+
   switch (action.type) {
     //GET PRODUCT
     case actionTypes.GET_PRODUCTS_REQUEST:
       return {
         ...state,
-        products: [],
         loading: true,
         
       };
     case actionTypes.GET_PRODUCTS_SUCCESS:
       return {
         ...state,
-        products: action.payload,
+        products: {fetchedProducts: action.payload.products ,count: action.payload.count},
         loading: false,
       };
     case actionTypes.GET_PRODUCTS_FAIL:
@@ -26,7 +34,6 @@ export const product = (state = { products: [], product: {}, loading: true, erro
       return {
         ...state,
         loading: true,
-        // product:{}
       };
     case actionTypes.GET_PRODUCT_DETAILS_SUCCESS:
       return {
@@ -47,15 +54,17 @@ export const product = (state = { products: [], product: {}, loading: true, erro
       };
       //CREATE PRODUCT
     case actionTypes.CREATE_PRODUCT_REQUEST:
+      
       return {
         ...state,
         loading: true,
       };
     case actionTypes.CREATE_PRODUCT_SUCCESS:
+      console.log(action.payload)
       return {
         ...state,
         loading: false,
-        products: [...state.products, action.payload],
+        products: { fetchedProducts: [...state.products.fetchedProducts, action.payload], count: state.products.count + 1 },
       };
     case actionTypes.CREATE_PRODUCT_FAIL:
       return {
@@ -70,7 +79,7 @@ export const product = (state = { products: [], product: {}, loading: true, erro
         loading: true,
       };
     case actionTypes.UPDATE_PRODUCT_SUCCESS:
-      const updatedList= state.products.map(product=>{
+      const updatedList= state.products.fetchedProducts.map(product=>{
         if(product._id===action.payload._id){
           return action.payload
         }
@@ -79,7 +88,7 @@ export const product = (state = { products: [], product: {}, loading: true, erro
       return {
         ...state,
         loading: false,
-        products: updatedList,
+        products: { fetchedProducts: updatedList, count: state.products.count }
       };
     case actionTypes.UPDATE_PRODUCT_FAIL:
       return {
@@ -95,13 +104,32 @@ case actionTypes.DELETE_PRODUCT_REQUEST:
         loading: true,
       };
     case actionTypes.DELETE_PRODUCT_SUCCESS:
-      const updatedListAfterDelete= state.products.filter(product=> product._id!==action.payload._id)
+      const updatedListAfterDelete= state.products.fetchedProducts.filter(product=> product._id!==action.payload._id)
       return {
         ...state,
         loading: false,
-        products: updatedListAfterDelete,
+        products: { fetchedProducts: updatedListAfterDelete, count: state.products.count - 1}
       };
     case actionTypes.DELETE_PRODUCT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+      // GET TOTAL PRODUCTS COUNT
+    case actionTypes.GET_TOTAL_PRODUCTS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        
+      };
+    case actionTypes.GET_TOTAL_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        productsCount: action.payload,
+        loading: false,
+      };
+    case actionTypes.GET_TOTAL_PRODUCTS_FAIL:
       return {
         ...state,
         loading: false,

@@ -1,9 +1,31 @@
-.productfilter__mobile{
-    display: none;
+.products__sidedrawer{
+    width: 70%;
+    height: 100vh;
+    background-color: #fff;
+    overflow-y: scroll;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: all 0.3s ease-in-out;/*Ease out, starts fast and ends slow*/
+    
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
 }
 
-@media (max-width: 950px) {
-    .productfilter__mobile{
-        display: flex;
+.products__sidedrawer.show{
+  transform: translateX(0);
+}
+.mobile__filter__container{
+    width:80%;
+   margin: 50px auto;
+}
+
+
+@media(min-width: 960px){
+    .sidedrawer{
+        display: none;
     }
 }

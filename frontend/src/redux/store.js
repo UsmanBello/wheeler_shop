@@ -12,16 +12,15 @@ import { cartReducer } from "./reducers/cartReducers";
 //   deleteProductReducer
 // } from "./reducers/productReducers";
 import { product } from "./reducers/productReducers"
+import { customer } from "./reducers/customerReducers"
+import { order } from "./reducers/orderReducers"
+
 
 const reducer = combineReducers({
   cart: cartReducer,
-  product
-  // getProducts: getProductsReducer,
-  // getProductDetails: getProductDetailsReducer,
-  // createProduct: createProductReducer,
-  // updateProduct: updateProductReducer,
-  // deleteProduct: deleteProductReducer,
-
+  product,
+  customer,
+  order
 });
 
 const middleware = [thunk];

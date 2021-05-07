@@ -6,8 +6,9 @@ import axios from "axios";
 export const createProduct = (newProduct) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_PRODUCT_REQUEST });
-
+   console.log(newProduct)
     const { data } = await axios.post("/api/products", newProduct);
+    console.log(data)
     dispatch({
       type: actionTypes.CREATE_PRODUCT_SUCCESS,
       payload: data,
@@ -65,19 +66,43 @@ export const deleteProduct = (productId) => async (dispatch) => {
 };
 
 
-export const getProducts = () => async (dispatch) => {
+export const getProducts = (q, brand, category, subCategory,productsPerPage, pageNumber, sort) => async (dispatch) => {
+  
+  
   try {
     dispatch({ type: actionTypes.GET_PRODUCTS_REQUEST });
-
-    const { data } = await axios.get("/api/products");
-
-    dispatch({
-      type: actionTypes.GET_PRODUCTS_SUCCESS,
-      payload: data,
-    });
+      let params = `?searchTerm=${q}&brand=${brand}&category=${category}&subCategory=${subCategory}&page=${pageNumber}&productsPerPage=${productsPerPage}&sort=${sort}`
+      
+      const { data } = await axios.get("/api/products"+ params);
+        console.log(data)
+      dispatch({
+        type: actionTypes.GET_PRODUCTS_SUCCESS,
+        payload: data,
+      });
   } catch (error) {
     dispatch({
       type: actionTypes.GET_PRODUCTS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getProductsCount = ( ) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.GET_TOTAL_PRODUCTS_REQUEST });
+    
+    const { data } = await axios.get("/api/products/totalProducts");
+  console.log(data)
+    dispatch({
+      type: actionTypes.GET_TOTAL_PRODUCTS_SUCCESS,
+      payload: data.totalproducts,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_TOTAL_PRODUCTS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
@@ -100,7 +125,7 @@ export const getProductDetails = (id) => async (dispatch) => {
    
     dispatch({
       type: actionTypes.GET_PRODUCT_DETAILS_FAIL,
-      payload:
+      payload: 
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,

@@ -5,6 +5,62 @@
 }
 
 .filter__component > div{
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
+.product__brand__filter{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.select__input{
+    margin-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 45px;
+    border-radius: 5px;
+    border: 1px solid #171717;
+}
+
+.main-list{
+    margin-top: 20px;
+    list-style: none;
+}
+.main__list__items{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(224, 224, 224);
+}   
+.main__list__items:not(:first-of-type){
+    margin-top: 10px;
+}
+.main__list__item__group{
+    display: flex;
+    justify-content: space-between;
+
+}
+.main__list__item__group > .fa-angle-down{
+    font-size: 1rem;
+    color: rgb(145, 145, 145);
+    transition: all 0.2s ease-out;
+}
+.sub-list{
+    margin-top: 10px;
+    border-left: 1px solid rgb(224, 224, 224);
+    margin-left: 10px;
+}
+.sub__list__item{
+    list-style: none;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 0.9rem;
+    
+}
+.sub__list__item:hover,
+.main__list__items:hover{
+    cursor: pointer;
+}
+.hide__sublist{
+    display: none;
+}
