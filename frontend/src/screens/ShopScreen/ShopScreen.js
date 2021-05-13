@@ -18,7 +18,6 @@ import { getProducts, getProductsCount}from '../../redux/actions/productActions'
 import SelectRowsPerPage from '../../components/SelectInput/SelectRowsPerPage';
 import SelectSort from '../../components/SelectInput/SelectSort';
 
-
 const  ShopScreen=({click, location, history})=> {
 
   //PAGINATE
@@ -226,10 +225,9 @@ const handleSortSelect=(value)=>{
               return <Product 
               key={product._id}
               name={product.name}
-              description={product.description}
+              snippet={product.snippet}
               price={product.price}
               image={product.images[0].image}
-              // imageUrl={}
               productId={product._id}/>
                })}
                </>

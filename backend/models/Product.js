@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
+// const domPurifier = require('dompurify');
+// const {JSDOM} = require('jsdom');
+// const htmlPurify= domPurifier(new JSDOM('').window);
+// const htnlStrip = require('string-strip-html');
 
 const productSchema = mongoose.Schema({
  productId: {
     type: String,
-    // required: true
   },
  name: {
     type: String,
@@ -12,6 +15,9 @@ const productSchema = mongoose.Schema({
   description: {
     type: String,
     required: true,
+  },
+ snippet: {
+	 type: String
   },
   price: {
     type: Number,
@@ -43,6 +49,22 @@ const productSchema = mongoose.Schema({
     type: Date
   }
 });
+
+// productSchema.pre("save", async (next)=>{
+// 	try{
+// 		console.log('in pre validate')
+// 		console.log(this)
+// 	if(this.description){
+// 		this.description= htmlPurify.sanitize(this.description) 
+// 		this.snippet = htmlStrip(this.description.substring(0, 100)).result
+		
+// 	} 
+//     return next() 
+// 	}catch(err){
+// 		console.log(err)
+// 		return next(err)
+// 	}
+// })
 
 const Product = mongoose.model("product", productSchema);
 

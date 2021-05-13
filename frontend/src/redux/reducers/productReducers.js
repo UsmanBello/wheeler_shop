@@ -1,8 +1,11 @@
 import * as actionTypes from "../constants/productConstants";
 export const product = (state = {
    products: {fetchedProducts: [], count:0},
+   relatedProducts: [],
   productsCount: 0,
-   product: {name:'', description: '', price: 0, brand:'', countInStock: 0, productId: '', images: [], category: '', subCategory: '', sales: 0},
+ product:{  name:'', description: '', price: 0, brand:'', countInStock: 0, productId: '', images: [{image: '',imageId: ''}], category: '', subCategory: '', sales: 0
+	 },
+ relatedProducts:[],
    brands: [],
     loading: true, 
     error: '' },
@@ -29,6 +32,31 @@ export const product = (state = {
         loading: false,
         error: action.payload,
       };
+  // GET RELATED PRODUCTS ----> JUST 3 PRODUCTS 
+     case actionTypes.GET_RELATED_PRODUCTS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        
+      };
+    case actionTypes.GET_RELATED_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        relatedProducts: action.payload,
+        loading: false,
+      };
+    case actionTypes.GET_RELATED_PRODUCTS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+	  case actionTypes.GET_RELATED_PRODUCT_DETAILS_RESET:
+		  return {
+        ...state,
+        relatedProducts: [],
+        loading: false,
+      };
     //GET PRODUCT DETAIL
     case actionTypes.GET_PRODUCT_DETAILS_REQUEST:
       return {
@@ -39,7 +67,7 @@ export const product = (state = {
       return {
         ...state,
         loading: false,
-        product: action.payload,
+        product:  action.payload
       };
     case actionTypes.GET_PRODUCT_DETAILS_FAIL:
       return {

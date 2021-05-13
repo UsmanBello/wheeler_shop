@@ -1,10 +1,21 @@
 import './ProductScreen.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-//Actions
-import { getProductDetails } from '../../redux/actions/productActions';
-import { addToCart } from '../../redux/actions/cartActions'
+
+//COMPONENTS IMPORTS
+import RelatedProducts from './ProductScreenComponents/RelatedProducts/RelatedProducts';
+import ProductDescription from './ProductScreenComponents/ProductDescription/ProductDescription';
+import ProductImages from './ProductScreenComponents/ProductImages/ProductImages';
+import AddToCart from './ProductScreenComponents/AddToCart/AddToCart';
+import PreviewCart from './ProductScreenComponents/PreviewCart/PreviewCart';
+//ACTIONS IMPORTS
+import { getProductDetails, 
+		getRelatedProducts, 
+		removeProductDetails,
+		removeRelatedProducts } from '../../redux/actions/productActions';
+import { addToCart, removeFromCart } from '../../redux/actions/cartActions';
+
 
 const  ProductScreen=({match, history})=> {
 
@@ -13,23 +24,41 @@ const  ProductScreen=({match, history})=> {
   const [currentImage, setCurrentImage]= useState(0)
 
   const productState = useSelector( state=> state.product)
+  const cart = useSelector( state=> state.cart);
   
-  const { loading, error, product } = productState
-console.log(typeof currentImage)
+  const { loading, error, product, relatedProducts} = productState
+  const { loadingToCart, cartError, cartItems } = cart
+ 
+  useEffect(()=>{
+	 return()=>{
+	    dispatch(removeRelatedProducts())
+	 }
+  },[])
+	
   useEffect(()=>{
     if(product && match.params.id !== product._id){
-      dispatch(getProductDetails(match.params.id))
+          dispatch(getProductDetails(match.params.id))
     }
   },[dispatch, product, match])
+  
+	
+  useEffect(()=>{
+	  if(product && match.params.id !== product._id){
+            dispatch(getRelatedProducts(match.params.id))
+	  }
+  },[dispatch, product, match])
 
+	//===================================PRODUCT IMAGE VIEW LOGIC====================================//
   const addToCartHandler = () =>{
-    dispatch(addToCart(product._id, qty))
-    history.push('/cart')
+	  
+         dispatch(addToCart(product._id, qty))
+    // history.push('/cart')
   }
+  
   const showImage=(index)=>{
       setCurrentImage(index)
   }
-
+  
   const handleLeftClick=()=>{
        if(currentImage===0){
          setCurrentImage(product.images.length-1)
@@ -53,80 +82,66 @@ console.log(typeof currentImage)
 
           }
   }
+//==========================================================================================//
+  
+//====================================CART PREVIEW LOGIC====================================//
+const removeHandler = (id) => {
+   dispatch(removeFromCart(id))
+}
+
+const getCartSubTotal = () => {
+  return cartItems
+    .reduce((price, item) => price + item.price * item.qty, 0)
+    .toFixed(2);
+};
+//==========================================================================================//
   return (
-    <div className='product-scrren'>
-      {loading ? <h2>Loading...</h2> : error ? <h2>{error}</h2>  : 
-      <>{ product!==undefined && 
-      <> 
+	  loading ? <h2>Loading...</h2> : error ? <h2>{error}</h2>  : 
+    <div className='product__screen'>
+		  <section className='product__screen__section1'>
         <div className='productscreen__left'>
-          
-            <div className='left__image'>
-              
-              <img src={product.images[currentImage].image}
-                    id='featured'
-                    alt={product.name}/>
-              <div className='slide__wrapper__container'>
-
-                <div className='arrow__button__container'>
-                 <i className="fa fa-chevron-circle-left" aria-hidden="true" onClick={()=>handleLeftClick()}></i>
-                </div>
-
-                <div id='images__slider'>
-                {
-                    product.images.map((image, index)=>{
-                      return <img src={image.image} alt={product.name}
-                                   width='200px'
-                                  className={currentImage===index ? 'clear thumbnail': 'blur thumbnail'}
-                                  onClick={()=>showImage(index)}
-                                 /* onMouseOver={()=>showImage(index)}*/
-                                 />
-                    })
-                }
-               
-                </div>
-                <div className='arrow__button__container'>
-                <i className="fa fa-chevron-circle-right"  onClick={()=>handleRightClick()}></i>
-                </div>
-              </div>
-            </div>
-            
+         
+            <ProductImages
+					 product={product}
+					 currentImage={currentImage}
+					 handleShowImage={showImage}
+					 handleRightClick={handleRightClick}
+					 handleLeftClick={handleLeftClick}/>
       
-              <div className='left__info'>
-                  <p className='left__name'>{product.name}</p>
-                  <p className='left__price'>${product.price}</p>
-                  <p className='left__description'>{product.description}</p>
-              </div>
+              <AddToCart 
+				  product={product}
+				  handleQtyChange={(e)=>setQty(e.target.value)}
+				  qty={qty}
+				  addToCartHandler={addToCartHandler}
+				  loadingToCart={loadingToCart}/>
+              
         </div>
             
         <div className='productscreen__right'>
-              <div className='right__info'>
-                  <p>
-                    Price: <span> ${product.price}</span>
-                  </p>
-                  <p>
-                    status: <span>{product.countInStock > 0 ? 'In stock' : 'Out of stock'}</span>
-                  </p>
-                  <p>
-                    Qty
-                    <select value={qty} onChange={(e)=>setQty(e.target.value)}>
-                    {[...Array(product.countInStock).keys()].map((x) => (
-                    <option key={x + 1} value={x + 1}>
-                      {x + 1}
-                    </option>
-                  ))}
-                    </select>
-                  </p>
-                  <p>
-                    <button type='button' onClick={addToCartHandler}>Add to cart</button>
-                  </p>
-              </div>
+			<PreviewCart cartItems={cartItems}
+				removeHandler={removeHandler} 
+				history={history} 
+				getCartSubTotal={getCartSubTotal}/>
         </div>
-</>
-                    }
-        </>
-}
+            
+
+		  </section>
+		  <hr className='product__screen__horizontal__line'/>
+		  <section className='product__screen__section2'>
+			  <ProductDescription product={product}/>
+		  </section>
+		  <hr className='product__screen__horizontal__line'/>
+		  <section className='product__screen__section3'>
+			  <div className='section__header'>
+				  <h2>Related Products</h2>
+			  </div>
+			  <RelatedProducts products={relatedProducts}/>
+		  </section>
+		  
     </div>
   );
 }
+// 
 
+				// 
 export default ProductScreen;

@@ -6,6 +6,7 @@ const express= require('express'),
 	  { getProducts,
         getProduct,
 		getProductsCount,
+	    getRelatedProducts,
         updateProduct,
 	    createProduct,
 		deleteProduct, 
@@ -17,9 +18,13 @@ router.route("/")
 .post(createProduct)
 .delete(deleteManyProducts);
 
+
+
 router.route("/totalProducts")
 .get(getProductsCount)
 
+router.route("/related-products/:productId")
+.get(getRelatedProducts)
 
 
 

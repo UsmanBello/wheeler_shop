@@ -1,0 +1,13 @@
+
+.product__images{
+    margin: 1rem;
+	max-width:700px;
+    flex: 0.7;
+}
+@media (max-width: 960px){
+    .product__images{
+		max-width: 100%;
+       flex:1;
+    }
+   
+}

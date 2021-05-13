@@ -1,12 +1,11 @@
 const Product = require('../models/Product');
+var cloudinary =  require('../config/cloudinary')
+const domPurifier = require('dompurify');
+const {JSDOM} = require('jsdom');
+const htmlPurify= domPurifier(new JSDOM('').window);
+const { stripHtml } = require('string-strip-html');
 
 //=======/api/appointments========\\
-var cloudinary = require('cloudinary');
-cloudinary.config({ 
-  cloud_name: 'omoalhaji', 
-  api_key: process.env.CLOUDINARY_API_KEY, 
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
 
 exports.createProduct = async function(req,res){
 
@@ -17,12 +16,19 @@ exports.createProduct = async function(req,res){
 				const uploadResponse = await cloudinary.v2.uploader.upload(image,{upload_preset : 'ml_default'});
 				imagesUrls.push({image: uploadResponse.secure_url, imageId: uploadResponse.public_id})
 			   }
-				
+			
+			// if(some required body data is missing return respective error and status)
+			let sanitizedDescription= htmlPurify.sanitize(req.body.description) 
+			let snippet= stripHtml(sanitizedDescription.substring(0, 100)).result
+		
+			
+			
 				
 			
 			let product = await Product.create({     name: req.body.name,
                                                      price: req.body.price,
-													 description: req.body.description,
+													 description: sanitizedDescription,
+												     snippet: snippet,
 													 productId: req.body.productId,
 													 brand: req.body.brand,
                                                      countInStock: req.body.countInStock,
@@ -110,6 +116,7 @@ exports.getProducts = async function(req,res){
 				// let products = await Product.find({$or: [{name: regex},{brand: qParams.brand},{subCategory: qParams.subCategory}]}).skip(skipValue).limit(Number(qParams.productsPerPage))
 				// let count = await Product.find({$or: [{name: regex},{brand: qParams.brand},{subCategory: qParams.subCategory}]}).countDocuments()
 				// console.log(products)
+			
 				return res.status(200).json({products, count});
 		
 		} catch(err){
@@ -147,9 +154,35 @@ exports.getProduct = async function(req,res){
             }})
 	}
 }
+
+exports.getRelatedProducts = async function(req, res){
+	try {
+		let product= await Product.findById(req.params.productId)
+		let subCat= product.subCategory;
+		let cat= product.category;
+		  let productsBySubCategory= await Product.find({subCategory: subCat}).limit(10)
+		  let productsByCategory= await Product.find({category: cat}).limit(10)
+		  
+		  let relatedBySubCategory= productsBySubCategory.filter(prod=>prod._id.toString()!==req.params.productId.toString())
+		  let relatedByCategory= productsByCategory.filter(prod=>prod._id.toString()!==req.params.productId.toString())
+		  let relatedProducts=[...shuffle(relatedBySubCategory), ...shuffle(relatedByCategory)]
+		  let distinctRelatedProducts= relatedProducts.filter((relatedProduct, i, self)=>self.findIndex(t=>																							(t._id.toString()===relatedProduct._id.toString()))===i)
+		
+		 return res.status(200).json(distinctRelatedProducts.slice(0,3))
+
+	}catch(err){
+		console.log(err)
+		return res.status(err.status || 500).json({
+            error: {
+                message: err.message || "Oops something went wrong."
+                
+            }})
+	}
+}
 exports.updateProduct = async function(req,res){
 	try{
-		
+		  let sanitizedDescription
+		  let descriptionSnippet
 		if(req.body.images){
 			var product = await Product.findById(req.params.productId)
 			
@@ -159,7 +192,14 @@ exports.updateProduct = async function(req,res){
 			 const uploadResponse = await cloudinary.v2.uploader.upload(image,{upload_preset : 'ml_default'});
 			 imagesUrls.push({image: uploadResponse.secure_url, imageId: uploadResponse.public_id})
 			}
-			 var product= await Product.findOneAndUpdate({_id: req.params.productId}, {...req.body, images: imagesUrls}, {new: true})
+			  //ALSO CHECK IF ANY PART IS MISSING AND RETURN APPROPRIATE ERROR AND STATUS CODE
+			sanitizedDescription= htmlPurify.sanitize(req.body.description) 
+			descriptionSnippet= stripHtml(sanitizedDescription.substring(0, 100)).result
+			 var product= await Product.findOneAndUpdate({_id: req.params.productId}, {...req.body,
+																					    description: sanitizedDescription,
+																					    snippet: descriptionSnippet,
+																					   	images: imagesUrls},
+														 								{new: true})
 		    return res.status(200).json(product)
 				
 			}else{
@@ -172,14 +212,25 @@ exports.updateProduct = async function(req,res){
 					imagesUrls.push({image: uploadResponse.secure_url, imageId: uploadResponse.public_id})
 				}
 				
-				var product= await Product.findOneAndUpdate({_id: req.params.productId}, {...req.body, images: imagesUrls}, {new: true})
+				sanitizedDescription = htmlPurify.sanitize(req.body.description) 
+			    descriptionSnippet = stripHtml(sanitizedDescription.substring(0, 100)).result
+				
+				var product= await Product.findOneAndUpdate({_id: req.params.productId}, {...req.body,
+																						   description: sanitizedDescription,
+																					       snippet: descriptionSnippet,
+																						   images: imagesUrls},
+															                              {new: true})
 		    return res.status(200).json(product)	
 			}
 		
 			
 		}else{//THIS IS ASSUMING PRODUCT IMAGE UPLOAD HAPPENS BY ITSELF
-		
-		var product= await Product.findOneAndUpdate({_id: req.params.productId}, req.body, {new: true})
+		sanitizedDescription = htmlPurify.sanitize(req.body.description) 
+			    descriptionSnippet = stripHtml(sanitizedDescription.substring(0, 100)).result
+		var product= await Product.findOneAndUpdate({_id: req.params.productId}, {...req.body, 
+																				  description: sanitizedDescription,
+																				  snippet: descriptionSnippet+'...'},
+																				  {new: true})
 		 return res.status(200).json(product)
 		}
 		
@@ -236,3 +287,22 @@ exports.deleteManyProducts = async function(req,res){
 function escapeRegex(text){
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
+			  
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}

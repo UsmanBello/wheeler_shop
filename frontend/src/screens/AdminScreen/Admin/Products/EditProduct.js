@@ -1,5 +1,7 @@
 import './EditProduct.css'
 import {useEffect, useState} from 'react'
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import {CKEditor} from "@ckeditor/ckeditor5-react"
 import Modal  from "react-modal";
 import useData from "../../../../utils/useData"
 
@@ -246,7 +248,7 @@ const EditProduct =({show, edit, cancel,product}) => {
                                             multiple/>
                                              {previewSources && 
                                             previewSources.map(source=>{
-                                                <div style={{marginTop: '10px'}}>
+                                               return <div style={{marginTop: '10px'}}>
                                                     <img src={source} width='50px'/>
                                                 </div>
                                             })
@@ -255,17 +257,15 @@ const EditProduct =({show, edit, cancel,product}) => {
                                     </div>
                                     <div className='edit__product__form__row'>
                                         <div className='edit__product__form__textarea'>
-                                            <label>
-                                                Description
-                                            </label>
-                                            <textarea
-                                                type='text'
-                                                name='description'
-                                                value={formData.description}
-                                                className='edit__textarea__input'
-                                                onChange={(e)=>{handleChange(e)}}
-
-                                            />
+											<label>Desctiption</label>
+                                           <CKEditor
+												  editor={ClassicEditor}
+												  data={formData.description}
+												  onChange={(event, editor) => {
+													const data = editor.getData()
+													setFormData({...formData, description: data})
+												  }}
+												/>
                                         </div>
                                     </div>
                                     <div className='edit__product__form__button__container'>
@@ -535,3 +535,14 @@ const EditProduct =({show, edit, cancel,product}) => {
 //   }
   
 //   export default EditProduct;
+{/*} <label>
+                                                Description
+                                            </label>
+                                            <textarea
+                                                type='text'
+                                                name='description'
+                                                value={formData.description}
+                                                className='edit__textarea__input'
+                                                onChange={(e)=>{handleChange(e)}}
+
+                                            /> */}

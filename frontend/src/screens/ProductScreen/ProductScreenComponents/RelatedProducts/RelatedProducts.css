@@ -1,0 +1,22 @@
+.related__products__container{
+	
+	width: 100%;
+	padding: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between
+}
+
+.relatd__product__column{
+
+	flex: 0.3;
+}
+
+ @media (max-width: 532px){
+	 .related__products__container{
+		 flex-direction:column;
+	 }
+  .relatd__product__column{
+	flex: 1;
+}
+} 

@@ -1,3 +1,5 @@
 export const ADD_TO_CART = "ADD_TO_CART";
+export const ADD_TO_CART_REQUEST="ADD_TO_CART_REQUEST"
+export const ADD_TO_CART_FAILURE="ADD_TO_CART_FAILURE"
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const EMPTY_CART= "EMPTY_CART";

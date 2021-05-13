@@ -4,7 +4,7 @@ const connectDB= require('./config/db');
 const productRoutes= require('./routes/productRoutes.js');
 const orderRoutes= require('./routes/orderRoutes');
 const customerRoutes= require('./routes/customerRoutes');
-const PORT = process.env.Port || 5000;
+const PORT = process.env.PORT || 5000;
 
 connectDB();
 const app= express();

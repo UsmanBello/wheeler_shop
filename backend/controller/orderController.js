@@ -16,6 +16,12 @@ const path=require('path');
 
 exports.createOrder = async function(req,res){
 	try{   
+		
+		//Find the purchased products
+		//If any of the data is not inserted correctly, return error(eg if customer email is associated with othe name)
+		//If products qty is less than qty purchsed, return error with out of stock of the products if not, update countInStock
+		//Create payment
+		//If payment is completed, create order, customer and then sendEmail
 			let purchacedProducts= await Product.find({ 
 				_id: {
 					$in: [...req.body.items.map(item=>item.product)]
@@ -24,10 +30,18 @@ exports.createOrder = async function(req,res){
 			var orderObjects=[]
 			var totalCost=0
 			req.body.items.forEach((item,index)=>{
+				//WE CAN UPDATE COUNT_IN_STOCK_HERE
 				var thisProduct=(purchacedProducts.filter(product=> product._id.toString()===item.product.toString()))[0]
 				orderObjects[index]= {product: thisProduct.name,  price: Number(thisProduct.price), qty: Number(item.qty)} 
 				totalCost+= (item.qty * thisProduct.price)
 			})
+			// var result= await stripe.paymentIntents.create({
+			// 	amount: totalCost*100,//AMOUNT IN CENTS
+			// 	currency: 'AED',
+			// 	description: 'new order',//`Order #${order._id} payment`,
+			// 	payment_method: req.body.id,
+			// 	confirm: true
+			// })
 			var customer = await Customer.findOne({email: req.body.customer.email})
 			if(!customer){
 				customer=  await Customer.create({
@@ -50,10 +64,11 @@ exports.createOrder = async function(req,res){
 			var result= await stripe.paymentIntents.create({
 				amount: totalCost*100,//AMOUNT IN CENTS
 				currency: 'AED',
-				description: `Order #${order._id} payment`,
+				description: 'new order',//`Order #${order._id} payment`,
 				payment_method: req.body.id,
 				confirm: true
 			})
+			// console.log(result)
 			customer.lastUpdated= new Date()
 			customer.orders.push(order._id)
 			order.populate("customer",{fullName: true})

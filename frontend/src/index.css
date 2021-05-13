@@ -47,3 +47,6 @@ img {
 .ReactModal__Overlay--before-close {
   opacity: 0;
 }
+.ck-editor__editable_inline {
+    min-height: 300px !important;
+}

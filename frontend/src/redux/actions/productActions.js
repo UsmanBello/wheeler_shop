@@ -90,6 +90,29 @@ export const getProducts = (q, brand, category, subCategory,productsPerPage, pag
   }
 };
 
+export const getRelatedProducts = (id/*, category, subCategory*/) => async (dispatch) => {
+  
+  
+  try {
+    dispatch({ type: actionTypes.GET_RELATED_PRODUCTS_REQUEST });
+     
+      const { data } = await axios.get("/api/products/related-products/"+id);//, {category, subCategory});
+	  console.log(data)
+      dispatch({
+        type: actionTypes.GET_RELATED_PRODUCTS_SUCCESS,
+        payload: data,
+      });
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_RELATED_PRODUCTS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 export const getProductsCount = ( ) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.GET_TOTAL_PRODUCTS_REQUEST });
@@ -134,5 +157,10 @@ export const getProductDetails = (id) => async (dispatch) => {
 };
 
 export const removeProductDetails = () => (dispatch) => {
-  dispatch({ type: actionTypes.GET_PRODUCT_DETAILS_RESET });
+       dispatch({ type: actionTypes.GET_PRODUCT_DETAILS_RESET });
 };
+
+export const removeRelatedProducts = () => (dispatch) => {
+       dispatch({ type: actionTypes.GET_RELATED_PRODUCT_DETAILS_RESET });
+};
+
