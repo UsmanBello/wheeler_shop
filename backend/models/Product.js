@@ -7,14 +7,14 @@ const mongoose = require("mongoose");
 const productSchema = mongoose.Schema({
  productId: {
     type: String,
+    required: true
   },
  name: {
     type: String,
     required: true,
   },
   description: {
-    type: String,
-    required: true,
+    type: String
   },
  snippet: {
 	 type: String
@@ -28,8 +28,7 @@ const productSchema = mongoose.Schema({
     required: true,
   },
   category: {
-    type: String,
-    required: true
+    type: String
   },
   subCategory: {
     type: String,

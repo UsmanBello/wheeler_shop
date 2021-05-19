@@ -10,6 +10,19 @@ const { stripHtml } = require('string-strip-html');
 exports.createProduct = async function(req,res){
 
 	try{
+		if(req.body.name===''){
+			return res.status(400).json({ message: "Name is required."})
+		}
+		if(req.body.price===''){
+			return res.status(400).json({ message: "Price is required."})
+		}
+		if(req.body.productId===''){
+			return res.status(400).json({ message: "ProductId is required."})
+		}
+		if(req.body.countInStock===''){
+			return res.status(400).json({ message: "Available quantity is required."})
+		}
+
 		if(req.body.images){
 		       const imagesUrls=[]
 			   for(const image of req.body.images){
@@ -20,10 +33,6 @@ exports.createProduct = async function(req,res){
 			// if(some required body data is missing return respective error and status)
 			let sanitizedDescription= htmlPurify.sanitize(req.body.description) 
 			let snippet= stripHtml(sanitizedDescription.substring(0, 100)).result
-		
-			
-			
-				
 			
 			let product = await Product.create({     name: req.body.name,
                                                      price: req.body.price,
@@ -35,7 +44,7 @@ exports.createProduct = async function(req,res){
                                                      images: imagesUrls,
                                                      category: req.body.category,
 													 subCategory: req.body.subCategory,
-													 lastUpdated: new Date()
+													 latestUpdate: new Date()
                                                      });
 
 													 console.log(product)
@@ -46,11 +55,7 @@ exports.createProduct = async function(req,res){
 		
 		} catch(err){
 			console.log(err)
-			return res.status(err.status || 500).json({
-                error: {
-                    message: err.message || "Oops something went wrong."
-                    
-                }})
+			return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 		}
 
 }
@@ -64,11 +69,7 @@ exports.getProductsCount = async function(req,res){
 				
 		} catch(err){
 			
-			return res.status(err.status || 500).json({
-                error: {
-                    message: err.message || "Oops something went wrong."
-                    
-                }})
+			return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 		}
 	
 }
@@ -89,7 +90,7 @@ exports.getProducts = async function(req,res){
 				var sort={}
 				if(qParams.sort){
 				  if(qParams.sort==='latest'){
-					  sort.lastUpdated = -1
+					  sort.latestUpdate = -1
 				  }else if(qParams.sort==='ascending'){
 					 sort.price = 1
 				  }else if(qParams.sort==='descending'){
@@ -121,11 +122,7 @@ exports.getProducts = async function(req,res){
 		
 		} catch(err){
 			console.log(err.message)
-			return res.status(err.status || 500).json({
-                error: {
-                    message: err.message || "Oops something went wrong."
-                    
-                }})
+			return res.status(err.status || 500).json({ message: err.message || "Oops something went wrong."})
 		}
 	
 }
@@ -135,11 +132,7 @@ exports.getAllBrands =  async function(req, res){
 			return res.status(200).json(brands)
 			
 	}catch(err){
-		return res.status(err.status || 500).json({
-			error: {
-				message: err.message || "Oops something went wrong."
-				
-			}})
+		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 	}
 }
 exports.getProduct = async function(req,res){
@@ -147,11 +140,7 @@ exports.getProduct = async function(req,res){
 		let product = await Product.findById(req.params.productId)
 		return res.status(200).json(product);
 	}catch(err){
-		return res.status(err.status || 500).json({
-            error: {
-                message: err.message || "Oops something went wrong."
-                
-            }})
+		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 	}
 }
 
@@ -172,15 +161,23 @@ exports.getRelatedProducts = async function(req, res){
 
 	}catch(err){
 		console.log(err)
-		return res.status(err.status || 500).json({
-            error: {
-                message: err.message || "Oops something went wrong."
-                
-            }})
+		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 	}
 }
 exports.updateProduct = async function(req,res){
 	try{
+		if(req.body.name===''){
+			return res.status(400).json({ message: "Name is required."})
+		}
+		if(req.body.price===''){
+			return res.status(400).json({ message: "Price is required."})
+		}
+		if(req.body.productId===''){
+			return res.status(400).json({ message: "ProductId is required."})
+		}
+		if(req.body.countInStock===''){
+			return res.status(400).json({ message: "Available quantity is required."})
+		}
 		  let sanitizedDescription
 		  let descriptionSnippet
 		if(req.body.images){
@@ -198,7 +195,8 @@ exports.updateProduct = async function(req,res){
 			 var product= await Product.findOneAndUpdate({_id: req.params.productId}, {...req.body,
 																					    description: sanitizedDescription,
 																					    snippet: descriptionSnippet,
-																					   	images: imagesUrls},
+																					   	images: imagesUrls,
+																						latestUpdate: new Date()},
 														 								{new: true})
 		    return res.status(200).json(product)
 				
@@ -218,7 +216,8 @@ exports.updateProduct = async function(req,res){
 				var product= await Product.findOneAndUpdate({_id: req.params.productId}, {...req.body,
 																						   description: sanitizedDescription,
 																					       snippet: descriptionSnippet,
-																						   images: imagesUrls},
+																						   images: imagesUrls,
+																						   latestUpdate: new Date()},
 															                              {new: true})
 		    return res.status(200).json(product)	
 			}
@@ -229,18 +228,15 @@ exports.updateProduct = async function(req,res){
 			    descriptionSnippet = stripHtml(sanitizedDescription.substring(0, 100)).result
 		var product= await Product.findOneAndUpdate({_id: req.params.productId}, {...req.body, 
 																				  description: sanitizedDescription,
-																				  snippet: descriptionSnippet+'...'},
+																				  snippet: descriptionSnippet+'...',
+																				  latestUpdate: new Date()},
 																				  {new: true})
 		 return res.status(200).json(product)
 		}
 		
 	}catch(err){
 		console.log(err)
-		return res.status(err.status || 500).json({
-            error: {
-                message: err.message || "Oops something went wrong."
-                
-            }})
+		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 	}
 
 }
@@ -260,11 +256,7 @@ exports.deleteProduct = async function(req,res){
 		
 		} catch(err){
 			 console.log(err)
-			return res.status(err.status || 500).json({
-                error: {
-                    message: err.message || "Oops something went wrong."
-                    
-                }})
+			return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 		}
 
 }

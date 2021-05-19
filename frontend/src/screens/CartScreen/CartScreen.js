@@ -5,9 +5,10 @@ import {Link } from 'react-router-dom';
 import CartItem from '../../components/CartItem/CartItem';
 //Actions
 import { addToCart, removeFromCart }  from '../../redux/actions/cartActions'
+import CheckoutHeader from '../../components/CheckoutHeader/CheckoutHeader';
 
 
-const  CartScreen=({ history })=> {
+const  CartScreen=({ history, location })=> {
 
 const dispatch = useDispatch()
 const cart = useSelector( state=> state.cart);
@@ -31,9 +32,11 @@ const getCartSubTotal = () => {
     .toFixed(2);
 };
   return (
+    <div className='cartscreen__page'>
+    <CheckoutHeader currentLocation={location.pathname}/>
     <div className='cartscreen'>
           <div className='cartscreen__left'>
-              <h2>Shopping Cart</h2>
+              
               {
                 cartItems.length === 0 ? 
                 (<div>Your cart is empty 
@@ -48,6 +51,9 @@ const getCartSubTotal = () => {
                    removeHandler={removeHandler}/> )
                   )
               }
+              <button className='cartscreen__continue__shopping' onClick={()=>history.push('/shop')}>
+                Continue shopping
+              </button>
           </div>
         <div className='cartscreen__right'>
               <div className='cartscreen__info'>
@@ -58,6 +64,7 @@ const getCartSubTotal = () => {
                 <button onClick={()=>history.push('/checkout')}>Proceed To Checkout</button>
               </div>
         </div>
+    </div>
     </div>
   );
 }

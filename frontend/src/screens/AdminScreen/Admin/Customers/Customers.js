@@ -95,9 +95,10 @@ const Customers =({location, history}) => {
         setToggleViewCustomer(true)
     }
     const handleViewOrders=(customerId)=>{
-      setCustomerToBeActedOn(customerId)
+      setCustomerToBeActedOn(customerId.toString())
       setToggleViewOrders(true)
     }
+    // console.log(customerToBeActedOn)
     const handleDeleteCustomer=(id)=>{
             dispatch(deleteCustomer(id))
             setToggleDeleteCustomer(false)
@@ -249,9 +250,9 @@ const Customers =({location, history}) => {
                             <thead>
                                 <tr className='table__row'>
                                     <th>#</th>
-                                    <th width='15%' className='same'>Name</th>
-                                    <th className='same' width='15%'>Email</th>
-                                    <th width='15%' className='same'>Mobile No</th>
+                                    <th width='20%' className='same'>Name</th>
+                                    <th className='same' width='20%'>Email</th>
+                                    <th width='20%' className='same'>Mobile No</th>
                                     <th width='10%' className='same'>Orders</th>
                                     <th width='10%'className='same'>Action</th>
                                  </tr>
@@ -305,17 +306,18 @@ const Customers =({location, history}) => {
                      customerId={customerToBeActedOn}
                      show={toggleViewCustomer}
                      cancel={()=>setToggleViewCustomer(false)}/> 
+         {toggleViewOrders &&
                      <ViewOrders
+                     customerId={customerToBeActedOn}
                      show={toggleViewOrders}
                      cancel={()=>setToggleViewOrders(false)}
-                     customerId={customerToBeActedOn}
-                     />
+                     />}
                     
                     <DeleteModal
                                 show={toggleDeleteCustomer}
                                 handleDelete={handleDeleteCustomer}
                                 cancel={()=>setToggleDeleteCustomer(false)}
-                                id={customerToBeActedOn._id}
+                                id={customerToBeActedOn}
                                 toDelete={'customer'}/> 
                 </div>
     )

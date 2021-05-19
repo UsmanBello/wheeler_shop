@@ -4,12 +4,12 @@ const OrderItem =({order, handleEditToggle, handleDeleteToggle, handleViewCustom
                  <tr className="table__row">
                                             <td></td>
                                      <td className='hide__at__mobile'>
-                                       {order._id}
+                                       {order.invoiceNo}
                                      </td>
                                      <td>{new Date(order.createdAt).toDateString()}</td>
-                                     <td onClick={()=>handleViewItems(order.items)}>{order.items.length}</td>
+                                     <td className='clickable' onClick={()=>handleViewItems(order.items)}>{order.items.length}</td>
                                      <td className='hide__at__mobile'>{order.totalCost}</td>
-                                     <td onClick={()=>handleViewCustomer(order.customer)}>{order.customerName}</td>
+                                     <td className='clickable' onClick={()=>handleViewCustomer(order.customer)}>{order.customerName}</td>
                                      <td className='admin__actions__container'>
                                              <button className='admin__edit__button' 
                                              onClick={()=>handleEditToggle(order)}>

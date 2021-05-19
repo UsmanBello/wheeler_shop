@@ -49,14 +49,22 @@
 .orders__table tbody tr:nth-child(odd){
  background-color: #dbdbdb;
 }
-
+.admin__actions__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
 .admin__edit__button{
     background-color: rgb(92, 184, 92);
-    padding:5px;
+    padding:6px;
     color:white;
     border: none;
     cursor: pointer;
     border-radius: 2px;
+    margin-right: 5px;
+    /* margin-top: 10px; */
+    /* align-self: center; */
 }
 .admin__delete__button{
     background-color: 	rgb(217, 83, 79);
@@ -65,6 +73,7 @@
     border: none;
     cursor: pointer;
     border-radius: 2px;
+    margin-left: 5px;
 }
 
 .found__results{

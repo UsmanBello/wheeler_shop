@@ -2,12 +2,18 @@ import * as actionTypes from "../constants/productConstants";
 import axios from "axios";
 
 
+const config = {
+  headers : { 
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+   }}
+
 
 export const createProduct = (newProduct) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_PRODUCT_REQUEST });
    console.log(newProduct)
-    const { data } = await axios.post("/api/products", newProduct);
+    const { data } = await axios.post("/api/products", newProduct, config);
     console.log(data)
     dispatch({
       type: actionTypes.CREATE_PRODUCT_SUCCESS,
@@ -29,7 +35,7 @@ export const updateProduct = (product) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.UPDATE_PRODUCT_REQUEST });
 
-    const { data } = await axios.put(`/api/products/${product._id}`, product);
+    const { data } = await axios.put(`/api/products/${product._id}`, product, config);
     dispatch({
       type: actionTypes.UPDATE_PRODUCT_SUCCESS,
       payload: data,
@@ -49,7 +55,7 @@ export const deleteProduct = (productId) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.DELETE_PRODUCT_REQUEST });
 
-    const { data } = await axios.delete(`/api/products/${productId}`);
+    const { data } = await axios.delete(`/api/products/${productId}`, config);
     dispatch({
       type: actionTypes.DELETE_PRODUCT_SUCCESS,
       payload: data,
@@ -73,7 +79,7 @@ export const getProducts = (q, brand, category, subCategory,productsPerPage, pag
     dispatch({ type: actionTypes.GET_PRODUCTS_REQUEST });
       let params = `?searchTerm=${q}&brand=${brand}&category=${category}&subCategory=${subCategory}&page=${pageNumber}&productsPerPage=${productsPerPage}&sort=${sort}`
       
-      const { data } = await axios.get("/api/products"+ params);
+      const { data } = await axios.get("/api/products"+ params, config);
         console.log(data)
       dispatch({
         type: actionTypes.GET_PRODUCTS_SUCCESS,
@@ -96,7 +102,7 @@ export const getRelatedProducts = (id/*, category, subCategory*/) => async (disp
   try {
     dispatch({ type: actionTypes.GET_RELATED_PRODUCTS_REQUEST });
      
-      const { data } = await axios.get("/api/products/related-products/"+id);//, {category, subCategory});
+      const { data } = await axios.get("/api/products/related-products/"+id, config);//, {category, subCategory});
 	  console.log(data)
       dispatch({
         type: actionTypes.GET_RELATED_PRODUCTS_SUCCESS,
@@ -117,7 +123,7 @@ export const getProductsCount = ( ) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.GET_TOTAL_PRODUCTS_REQUEST });
     
-    const { data } = await axios.get("/api/products/totalProducts");
+    const { data } = await axios.get("/api/products/totalProducts", config);
   console.log(data)
     dispatch({
       type: actionTypes.GET_TOTAL_PRODUCTS_SUCCESS,
@@ -138,7 +144,7 @@ export const getProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.GET_PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/products/${id}`);
+    const { data } = await axios.get(`/api/products/${id}`, config);
       
     dispatch({
       type: actionTypes.GET_PRODUCT_DETAILS_SUCCESS,

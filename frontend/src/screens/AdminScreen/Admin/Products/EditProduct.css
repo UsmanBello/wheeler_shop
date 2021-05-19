@@ -51,6 +51,11 @@
     height:35px;
     padding: 0 10px;
 }
+.edit__form__input__error{
+    height:35px;
+    padding: 0 10px;
+    border-color: red;
+}
 .edit__product__form__textarea{
  padding: 10px;
  flex: 1;

@@ -1,0 +1,16 @@
+.checkout__screen__header{
+    font-size: 25px;
+    color:rgb(125, 125, 125);
+    transition: 0.3s;
+}
+.pointable{
+    cursor: pointer;
+    text-decoration: none;
+    color:rgb(125, 125, 125);
+}
+.pointable:hover{
+    color: black;
+}
+.current__checkout__link{
+    color: black;
+}

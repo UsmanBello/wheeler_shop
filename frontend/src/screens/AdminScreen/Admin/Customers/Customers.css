@@ -30,7 +30,6 @@
 .customers__table tbody tr:nth-child(odd){
  background-color: #dbdbdb;
 }
-
 .admin__edit__button{
     background-color: rgb(92, 184, 92);
     padding:5px;
@@ -61,6 +60,10 @@
     margin-top: 15px;
 } */
 
+.clickable{
+    cursor: pointer;
+    text-decoration:underline;
+}
 /*======PAGE COMPONENT TO BE TRANSFERED=======*/
 .page__component__container{
     margin: 20px auto;

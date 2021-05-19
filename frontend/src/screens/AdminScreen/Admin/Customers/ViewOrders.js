@@ -6,19 +6,22 @@ import Modal  from "react-modal";
 
 //ACTION
 import { getCustomerOrders } from '../../../../redux/actions/orderActions'//fetch orders by customer
-
+// import { getCustomerDetails } from '../../../../redux/actions/customerActions'//fetch orders by customer
 
 Modal.setAppElement("#root");
-
 const ViewOrders=({show, cancel, customerId})=>{
 
-    const dispatch= useDispatch()
-    const customerOrdersState = useSelector(state=> state.order)
-    const { loading, error, customerOrders } = customerOrdersState
+const dispatch= useDispatch()
+const customerOrdersState = useSelector(state=> state.order)
+const { loading, error, customerOrders } = customerOrdersState
 
 useEffect(()=>{
+    // if(show){
+    console.log(customerId)
+//  dispatch(getCustomerDetails(customerId))
   dispatch(getCustomerOrders(customerId))
-},[dispatch])
+    // } 
+},[dispatch/*, customerId*/])
 
 return (loading ? <h2>Loading...</h2> : error ? <h2>{error}</h2> : 
     <Modal 
@@ -34,10 +37,10 @@ return (loading ? <h2>Loading...</h2> : error ? <h2>{error}</h2> :
             <thead>
                 <tr className='orderedItems__table__row'>
                     <th>#</th>
-                    <th width='40%'>Invoice No</th>
-                    <th width='20%'>Date</th>
-                    <th width='20%'>Products</th>
-                    <th width='20%'>Total</th>
+                    <th width='35%'>Invoice No</th>
+                    <th width='35%'>Date</th>
+                    <th  width='5%'>Products</th>
+                    <th width='25%'>Total</th>
                  </tr>
             </thead>
             <tbody>
@@ -45,13 +48,12 @@ return (loading ? <h2>Loading...</h2> : error ? <h2>{error}</h2> :
                     customerOrders.map((order, index)=>{
                         return  <tr className="orderedItems__table__row" key={order._id}>
                                     <td></td>
-                                    <td>{order._id}</td>
-                                    <td>{new Date(order).toDateString()}</td>
+                                    <td>{order.invoiceNo}</td>
+                                    <td>{new Date(order.createdAt).toDateString()}</td>
                                     <td>{order.items.length}</td>
                                     <td>AED{order.totalCost}</td>
                                 </tr>
                      })
-                    
                 }
             </tbody>
             </table>

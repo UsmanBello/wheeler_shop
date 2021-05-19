@@ -232,7 +232,7 @@ const Orders =({location, history}) => {
                             <thead>
                                 <tr className='table__row'>
                                     <th>#</th>
-                                    <th width='35%' className='same'>Invoice No</th>
+                                    <th width='20%' className='same'>Invoice No</th>
                                     <th className='hide__at__mobile' width='20%'>Date</th>
                                     <th width='10%' className='hide__at__mobile'>Items</th>
                                     <th width='10%' className='same'>Total</th>

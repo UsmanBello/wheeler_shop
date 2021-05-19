@@ -4,7 +4,12 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
 import {CKEditor} from "@ckeditor/ckeditor5-react"
 import Modal  from "react-modal";
 import useData from "../../../../utils/useData"
+import {  isEmptyField, isNumber  } from '../../../../utils/helpers'
 
+
+//COMPONENTS
+import Required from '../../../../components/Required/Required';
+import Invalid from '../../../../components/Invalid/Invalid';
 
 Modal.setAppElement("#root");
 
@@ -16,12 +21,26 @@ const EditProduct =({show, edit, cancel,product}) => {
         price: '',
         description: '',
         qty: '',
-        sales: '',
+        sales: 0,
         brand: '',
         category: '',
         subCategory: '',
         image: '',
         productId: ''
+    })
+    const [error, setError]= useState({
+        requireName: false,
+        requirePrice: false,
+        requireDescription: false,
+        requireQty: false,
+        requireBrand: false,
+        requireCategory: false,
+        requireSubcategory: false,
+        requireImages: false,
+        requireProductId: false,
+        invalidPrice: false,
+        invalidQty: false,
+        invalidSales: false
     })
 
     const [subCategories, setSubCategories] = useState(['---Select Category---'])
@@ -30,7 +49,21 @@ const EditProduct =({show, edit, cancel,product}) => {
     const [previewSources, setPreviewSources]= useState([])
     const [addedSources, setAddedSources] = useState([])
 	// const [selectedFiles, setSelectedFiles]= useState([]);
-
+    useEffect(()=>{
+        setError({
+            requireName: false,
+            requirePrice: false,
+            requireDescription: false,
+            requireQty: false,
+            requireBrand: false,
+            requireCategory: false,
+            requireSubcategory: false,
+            requireImages: false,
+            requireProductId: false,
+            invalidPrice: false,
+            invalidQty: false
+        })
+    },[show])
     useEffect(()=>{
             setFormData({
                 name: product.name,
@@ -44,7 +77,7 @@ const EditProduct =({show, edit, cancel,product}) => {
                 image: product.images,
                 productId: product.productId
             })
-    },[product])
+    },[product, show])
     useEffect(()=>{
         setPreviewSources(addedSources)
     },[addedSources])
@@ -61,6 +94,16 @@ const EditProduct =({show, edit, cancel,product}) => {
             }
         }
         setFormData({...formData, [e.target.name]: e.target.value})
+
+        e.target.name === "name" && setError({ ...error, requireName: false });
+        e.target.name === "price" && setError({ ...error, requirePrice: false, invalidPrice: false });
+        e.target.name === "description" && setError({ ...error, requireDescription: false });
+        e.target.name === "qty" && setError({ ...error, requireQty: false, invalidQty: false })
+        e.target.name === "brand" && setError({ ...error, requireBrand: false })
+        e.target.name === "category" && setError({ ...error, requireCategory: false });
+        e.target.name === "subCategory" && setError({ ...error, requireSubcategory: false })
+        e.target.name === "productId" && setError({ ...error, requireProductId: false })
+        e.target.name=== "sales" && setError({...error, invalidSales: false})
     }
     const previewFiles=(files)=>{
         let sources=[]
@@ -83,11 +126,43 @@ const EditProduct =({show, edit, cancel,product}) => {
         for(var i =0; i< e.target.files.length; i++){
            files.push(e.target.files[i])
         }
+        e.target.name === "images" && setError({ ...error, requireImages: false })
       previewFiles(files)
 
     }
     const handleSubmit=(e)=>{
         e.preventDefault()
+        console.log(formData)
+        const {name, price, description, qty, sales, brand, category, subCategory, productId}= formData
+        if (
+            isEmptyField(name) ||
+            isEmptyField(price) ||
+            isEmptyField(description) ||
+            isEmptyField(qty) ||
+            isEmptyField(brand) ||
+            isEmptyField(category) ||
+            isEmptyField(subCategory) ||
+            isEmptyField(productId)||
+            !isNumber(price) ||
+            !isNumber(qty) ||
+            !isNumber(sales) 
+          ) {
+            setError({
+                requireName: isEmptyField(name),
+                requirePrice: isEmptyField(price),
+                requireDescription: isEmptyField(description),
+                requireQty: isEmptyField(qty),
+                requireBrand: isEmptyField(brand),
+                requireCategory: isEmptyField(category),
+                requireSubcategory: isEmptyField(subCategory),
+                requireImages: (previewSources.length < 1) && product.images.length===0,
+                requireProductId: isEmptyField(productId),
+                invalidPrice: !isNumber(price),
+                invalidQty: !isNumber(qty),
+                invalidSales: !isNumber(sales)
+            });
+            return;
+          }
         previewSources.length >0 ? edit({...formData, _id: product._id, images: previewSources}):
         edit({...formData, _id: product._id})
     }
@@ -118,10 +193,10 @@ const EditProduct =({show, edit, cancel,product}) => {
                                                 type='text'
                                                 name='name'
                                                 value={formData.name}
-                                                className='edit__form__input'
+                                                className={error.requireName ? 'edit__form__input__error' : 'edit__form__input'}
                                                 onChange={(e)=>{handleChange(e)}}
-
                                             />
+                                             <Required field={"Name"} display={error.requireName} />
                                         </div>
                                         <div className='edit__product__form__column'>
                                             <label>
@@ -131,10 +206,11 @@ const EditProduct =({show, edit, cancel,product}) => {
                                                 type='text'
                                                 name='price'
                                                 value={formData.price}
-                                                className='edit__form__input'
+                                                className={error.requirePrice || error.invalidPrice ? 'edit__form__input__error' : 'edit__form__input'}
                                                 onChange={(e)=>{handleChange(e)}}
-
                                             />
+                                             <Required field={"Price"} display={error.requirePrice} />
+                                            {!error.requirePrice && <Invalid field={"Price"} display={error.invalidPrice} />}
                                         </div>
                                     </div>
                                     <div className='edit__product__form__row'>
@@ -146,10 +222,12 @@ const EditProduct =({show, edit, cancel,product}) => {
                                                 type='text'
                                                 name='qty'
                                                 value={formData.qty}
-                                                className='edit__form__input'
+                                                className={error.requireQty || error.invalidQty ? 'edit__form__input__error' : 'edit__form__input'}
                                                 onChange={(e)=>{handleChange(e)}}
 
                                             />
+                                             <Required field={"Quantity"} display={error.requireQty} />
+                                           {!error.requireQty && <Invalid field={"Quantity"} display={error.invalidQty} />}
                                         </div>
                                         <div className='edit__product__form__column__half'>
                                             <label>
@@ -159,17 +237,18 @@ const EditProduct =({show, edit, cancel,product}) => {
                                                 type='text'
                                                 name='sales'
                                                 value={formData.sales}
-                                                className='edit__form__input'
+                                                className={error.invalidSales ? 'edit__form__input__error' : 'edit__form__input'}
                                                 onChange={(e)=>{handleChange(e)}}
 
                                             />
+                                             <Invalid field={"Sales"} display={error.invalidSales} />
                                         </div>
                                         <div className='edit__product__form__column'>
                                             <label>
                                                 Brand
                                             </label>
                                             <select
-                                            className='edit__form__input'
+                                            className={error.requireBrand ? 'edit__form__input__error' : 'edit__form__input'}
                                             name='brand'
                                             type='select'
                                             onChange={(e)=>{handleChange(e)}}
@@ -181,6 +260,7 @@ const EditProduct =({show, edit, cancel,product}) => {
                                                      })
                                                  }
                                             </select>
+                                            <Required field={"Brand"} display={error.requireBrand} />
                                         </div>
                                        
                                     </div>
@@ -190,7 +270,7 @@ const EditProduct =({show, edit, cancel,product}) => {
                                                 Category
                                             </label>
                                             <select value={formData.category} 
-                                            className='edit__form__input'
+                                            className={error.requireCategory ? 'edit__form__input__error' : 'edit__form__input'}
                                             name='category'
                                              onChange={(e)=>handleChange(e)}
                                              type='select'>
@@ -201,13 +281,14 @@ const EditProduct =({show, edit, cancel,product}) => {
                                                      })
                                                  }
                                             </select>
+                                            <Required field={"Category"} display={error.requireCategory} />
                                         </div>
                                         <div className='edit__product__form__column'>
                                             <label>
                                                 Sub Category
                                             </label>
                                             <select value={formData.subCategory} 
-                                            className='edit__form__input'
+                                            className={error.requireSubcategory ? 'edit__form__input__error' : 'edit__form__input'}
                                             name='subCategory'
                                              onChange={(e)=>handleChange(e)}
                                              type='select'>
@@ -219,6 +300,7 @@ const EditProduct =({show, edit, cancel,product}) => {
 
                                                 }
                                             </select>
+                                            <Required field={"Sub Category"} display={error.requireSubcategory} />
                                         </div>
                                     </div>
                                     
@@ -231,10 +313,11 @@ const EditProduct =({show, edit, cancel,product}) => {
                                                 type='text'
                                                 name='productId'
                                                 value={formData.productId}
-                                                className='edit__form__input'
+                                                className={error.requireProductId ? 'edit__form__input__error' : 'edit__form__input'}
                                                 onChange={(e)=>{handleChange(e)}}
 
                                             />
+                                             <Required field={"Product Id"} display={error.requireProductId} />
                                         </div>
                                         <div className='edit__product__form__column'>
                                         <label>
@@ -244,8 +327,9 @@ const EditProduct =({show, edit, cancel,product}) => {
                                             type='file'
                                             name='images'
                                             onChange={(e)=>handleFileChange(e)}
-                                            className='form__input'
+                                            className={error.requireName ? 'edit__form__input__error' : 'edit__form__input'}
                                             multiple/>
+                                             <Required field={"Images"} display={error.requireImages} />
                                              {previewSources && 
                                             previewSources.map(source=>{
                                                return <div style={{marginTop: '10px'}}>
@@ -258,10 +342,12 @@ const EditProduct =({show, edit, cancel,product}) => {
                                     <div className='edit__product__form__row'>
                                         <div className='edit__product__form__textarea'>
 											<label>Desctiption</label>
+                                            <Required field={"Description"} display={error.requireDescription} />
                                            <CKEditor
 												  editor={ClassicEditor}
 												  data={formData.description}
 												  onChange={(event, editor) => {
+                                                    setError({...error, requireDescription: false})
 													const data = editor.getData()
 													setFormData({...formData, description: data})
 												  }}

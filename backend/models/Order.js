@@ -4,17 +4,23 @@ const Customer = require('./Customer')
 const orderSchema = mongoose.Schema({
 
   items:  [mongoose.Schema.Types.Mixed],
-  // invoiceNo: {
-  //     type: String,
-  //     unique: true
-  // },
+  invoiceNo: {
+      type: String,
+      unique: true
+  },
   totalCost: {
       type: Number,
       required: true
   },
-  confirmed: {
-      type: Boolean,
-      default: false
+  status: {
+      type: String
+  },
+  paymentType:{
+    type:String,
+    required: true 
+  },
+  shipping: {
+      type: String
   },
   customerName:{
     type: String,

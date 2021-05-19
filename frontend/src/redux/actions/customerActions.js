@@ -1,13 +1,18 @@
 import * as actionTypes from "../constants/customerConstants";
 import axios from "axios";
 
+const config = {
+  headers : { 
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+   }}
 
 
 export const createCustomer = (newCustomer) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_CUSTOMER_REQUEST });
    console.log(newCustomer)
-    const { data } = await axios.post("/api/customers", newCustomer);
+    const { data } = await axios.post("/api/customers", newCustomer, config);
     console.log(data)
     dispatch({
       type: actionTypes.CREATE_CUSTOMER_SUCCESS,
@@ -29,7 +34,7 @@ export const updateCustomer = (customer) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.UPDATE_CUSTOMER_REQUEST });
 
-    const { data } = await axios.put(`/api/customers/${customer._id}`, customer);
+    const { data } = await axios.put(`/api/customers/${customer._id}`, customer, config);
     dispatch({
       type: actionTypes.UPDATE_CUSTOMER_SUCCESS,
       payload: data,
@@ -49,7 +54,7 @@ export const deleteCustomer = (customerId) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.DELETE_CUSTOMER_REQUEST });
 
-    const { data } = await axios.delete(`/api/customers/${customerId}`);
+    const { data } = await axios.delete(`/api/customers/${customerId}`, config);
     console.log(data)
     dispatch({
       type: actionTypes.DELETE_CUSTOMER_SUCCESS,
@@ -74,7 +79,7 @@ export const getCustomers = (q, customersPerPage, pageNumber) => async (dispatch
     dispatch({ type: actionTypes.GET_CUSTOMERS_REQUEST });
     let params = `?searchTerm=${q}&page=${pageNumber}&customersPerPage=${customersPerPage}`
       
-      const { data } = await axios.get("/api/customers"+params);
+      const { data } = await axios.get("/api/customers"+params, config);
         console.log(data)
       dispatch({
         type: actionTypes.GET_CUSTOMERS_SUCCESS,
@@ -96,7 +101,7 @@ export const getCustomersCount = ( ) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.GET_TOTAL_CUSTOMERS_REQUEST });
     
-    const { data } = await axios.get("/api/customers/totalCustomers");
+    const { data } = await axios.get("/api/customers/totalCustomers", config);
   console.log(data)
     dispatch({
       type: actionTypes.GET_TOTAL_CUSTOMERS_SUCCESS,
@@ -115,10 +120,10 @@ export const getCustomersCount = ( ) => async (dispatch) => {
 
 export const getCustomerDetails = (id) => async (dispatch) => {
   try {
-    console.log(id)
+    // console.log(id)
     dispatch({ type: actionTypes.GET_CUSTOMER_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/customers/${id}`);
+    const { data } = await axios.get(`/api/customers/${id}`, config);
       
     dispatch({
       type: actionTypes.GET_CUSTOMER_DETAILS_SUCCESS,

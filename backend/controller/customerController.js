@@ -8,11 +8,7 @@ exports.getCustomersCount = async function(req,res){
 				
 		} catch(err){
 			
-			return res.status(err.status || 500).json({
-                error: {
-                    message: err.message || "Oops something went wrong."
-                    
-                }})
+			return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 		}
 	
 }
@@ -37,11 +33,7 @@ exports.getCustomers = async function(req,res){
 		return res.status(200).json({customers, count});
 
 		} catch(err){
-			return res.status(err.status || 500).json({
-                error: {
-                    message: err.message || "Oops something went wrong."
-                    
-                }})
+			return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 		}
 
 }
@@ -53,11 +45,7 @@ exports.getCustomer = async function(req,res){
 		return res.status(200).json(customer);
 	}catch(err){
 		console.log(err)
-		return res.status(err.status || 500).json({
-            error: {
-                message: err.message || "Oops something went wrong."
-                
-            }})
+		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 	}
 }
 exports.updateCustomer = async function(req,res){
@@ -66,11 +54,7 @@ exports.updateCustomer = async function(req,res){
 		 return res.status(200).json(customer)
 	}catch(err){
 		
-		return res.status(err.status || 500).json({
-            error: {
-                message: err.message || "Oops something went wrong."
-                
-            }})
+		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 	}
 
 }
@@ -84,11 +68,7 @@ exports.deleteCustomer = async function(req,res){
 		
 		} catch(err){
 			
-			return res.status(err.status || 500).json({
-                error: {
-                    message: err.message || "Oops something went wrong."
-                    
-                }})
+			return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 		}
 
 }

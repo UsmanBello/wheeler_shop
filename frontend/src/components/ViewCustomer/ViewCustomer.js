@@ -35,7 +35,7 @@ useEffect(()=>{
                                 <div className='customer__info__content'>
                                     <div className='customer__info'>
                                         <span className='info__title'>Full Name :</span>{" "}
-                                        <span className='info'>{customer.fullName}</span>
+                                        <span className='info'>{`${customer.firstName} ${customer.lastName}`}</span>
                                     </div>
                                     <div className='customer__info'>
                                         <span className='info__title'>Phone :</span>{" "}
@@ -51,15 +51,11 @@ useEffect(()=>{
                                     </div> 
                                     <div className='customer__info'>
                                         <span className='info__title'>State :</span>{" "}
-                                        <span className='info'>{customer.state || 'N/A'}</span>
+                                        <span className='info'>{customer.city || 'N/A'}</span>
                                     </div>
                                     <div className='customer__info'>
                                         <span className='info__title'>Country :</span>{" "}
                                         <span className='info'>{customer.country || 'N/A'}</span>
-                                    </div>
-                                    <div className='customer__info'>
-                                        <span className='info__title'>Zip :</span>{" "}
-                                        <span className='info'>{customer.zip || 'N/A'}</span>
                                     </div>
                                 </div>
                             </div>

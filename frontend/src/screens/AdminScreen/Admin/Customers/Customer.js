@@ -4,10 +4,10 @@ const Customer =({customer, handleEditToggle, handleDeleteToggle, handleViewCust
     return (
                  <tr className="table__row">
                                             <td></td>
-                                     <td onClick={()=>handleViewCustomer(customer._id)}>{customer.fullName}</td>
+                                     <td className='clickable' onClick={()=>handleViewCustomer(customer._id)}>{`${customer.firstName} ${customer.lastName}`}</td>
                                      <td>{customer.email}</td>
                                      <td>{customer.phone}</td>
-                                     <td onClick={()=>handleViewOrders(customer._id)}>{customer.orders.length}</td>
+                                     <td className='clickable' onClick={()=>handleViewOrders(customer._id)}>{customer.orders.length}</td>
                                      <td className='admin__actions__container'>
                                             <button className='admin__edit__button' 
                                              onClick={()=>handleEditToggle(customer)}>

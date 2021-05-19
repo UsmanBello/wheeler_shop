@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 
 const customerSchema = mongoose.Schema({
-  fullName: {
+  firstName: {
       type: String,
       required: true
   },
+  lastName: {
+    type: String,
+    required: true
+},
   email: {
       type: String,
       required: true,
@@ -20,7 +24,6 @@ const customerSchema = mongoose.Schema({
   street: {type: String},
   city: {type: String},
   country: {type: String},
-  zip: {type: Number},
 //   address:  {type: mongoose.Schema.Types.Mixed},
 //   address: {
 //      street: {type: String},
@@ -29,9 +32,9 @@ const customerSchema = mongoose.Schema({
 //      zip: {type: Number}
 //   },
 phone:{
-      type: Number
+      type: String
   },
- lastUpdated: {
+ latestUpdate: {
      type: Date
  }
 });

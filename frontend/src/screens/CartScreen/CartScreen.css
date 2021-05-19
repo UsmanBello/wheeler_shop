@@ -1,12 +1,20 @@
-.cartscreen{
+.cartscreen__page{
     display: flex;
+    flex-direction: column;
     max-width: 1300px;
+    align-items: center;
     margin: 2rem auto;
 }
 
-.cartscreen h2{
-    margin-bottom: 1rem;
+.cartscreen{
+    display: flex;
+    width: 100%;
+    margin-top:1rem;
 }
+
+/* .cartscreen h2{
+    margin-bottom: 1rem;
+} */
 
 .cartscreen__left {
     flex: 0.7;
@@ -14,8 +22,18 @@
     background-color: transparent;
     padding:1rem;
 }
-
+.cartscreen__continue__shopping{
+    background-color: black;
+    border: none;
+    padding: 10px;
+    width: auto;
+    color: white;
+    font-size: 1rem;
+    margin-top: 20px;
+    cursor: pointer;
+}
 .cartscreen__right {
+    margin-top: 1rem;
     flex: 0.3;
     background: #fff;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);

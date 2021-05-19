@@ -1,5 +1,28 @@
 .checkout__screen{
+    max-width: 1300px;
+    margin: 2rem;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    align-items: center; 
+}
+.checkout__screen__content{
+    display: flex;
+    width: 100%;
+}
+
+.customer__payment__info{
+    flex: 0.6;
+    /* max-width:700px; */
+}
+.invoice__info{
+    flex: 0.4;
+}
+
+.expand{
+    flex:1;
+}
+
+.shrink{
+    display: none;
+    flex:0;
 }
