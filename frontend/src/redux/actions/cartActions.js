@@ -1,10 +1,11 @@
 import * as actionTypes from "../constants/cartConstants";
-import axios from "axios";
+import  axiosInstance,{setTokenHeader } from '../../utils/api'
+
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
 	try{
 		dispatch({type: actionTypes.ADD_TO_CART_REQUEST})
-  const { data } = await axios.get(`/api/products/${id}`)		
+  const { data } = await axiosInstance.get(`/api/products/${id}`)		
 							  dispatch({
 								type: actionTypes.ADD_TO_CART,
 								payload: {

@@ -80,38 +80,10 @@
     margin-top: 15px;
 }
 
-/*======PAGE COMPONENT TO BE TRANSFERED=======*/
-.page__component__container{
-    margin: 20px auto;
-}
-.pagination__btns{
-    width: 80%;
-    height: 40px;
-    list-style: none;
-    display: flex;
-    justify-content: center;
-}
-.pagination__btns a {
-    padding: 10px;
-    margin: 3px;
-    border:1px solid black;
-    border-radius: 5px;
-    color: black;
-    cursor: pointer;
-}
-.pagination__btns a:hover{
-    background-color: black;
-    color: white;
-}
-.pagination__active a{
-    background-color: black;
-    color: white;
-} 
 @media (max-width: 700px) {
     .products__header{
         display: flex;
         flex-direction: column;
-        /* justify-content: space-around; */
     }
     .products__header .add__button{
         align-self: start;

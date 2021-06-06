@@ -1,39 +1,41 @@
 import './AdminProductsFilter.css';
-import useData from '../../../../utils/useData';
-import SelectRowsPerPage from '../../../../components/SelectInput/SelectRowsPerPage';
-import SelectSort from '../../../../components/SelectInput/SelectSort';
+import {useSelectOption} from '../../../../utils/hooks';
+import MySelect from '../../../../components/SelectInput/MySelect';
 
 
 const AdminProductsFilter=({handleBrandChange, brandInput, handleCategoryChange, categoryInput, rowsPerPage, handleSetRowPerPage, sortChoice, handleSortSelect})=>{
 
-    const {brands, categories}= useData()
-
+    const {allBrandOptions, allCategoryOptions, rowsPerPageOptions, productSortOption}= useSelectOption()
+    
     return(
         <div className='admin__products__filter__container'>
             <div className='left__side'>
-             <select className='brand__select__input' value={brandInput} onChange={(e)=>handleBrandChange(e)}>
-                                <option value=''>All Brands</option>
-                                {
-                                brands.map((brand, index)=>{
-                                    return <option key={index} value={brand.name}>{brand.name}</option>
-                                })}
-                         </select>
-                         <select className='category__select__input' value={categoryInput} onChange={(e)=>handleCategoryChange(e)}>
-                                <option value=''>All Categories</option>
-                                {
-                                categories.map((category, index)=>{
-                                    return <option key={index} value={category.main}>{category.main.split('_').join(' ')}</option>
-                                })}
-                         </select>
+            <div className='admin_product_filter__left__Side__brand__filter'>
+             <MySelect 
+             selectedValue={brandInput}
+              handleSelectValue={handleBrandChange}
+               selectOptions={allBrandOptions}/>
+               </div>
+               <div className='admin_product_filter__left__Side__category__filter'>
+             <MySelect 
+             selectedValue={categoryInput}
+              handleSelectValue={handleCategoryChange}
+               selectOptions={allCategoryOptions}/>
+               </div>
              </div>
              <div className='right__side'>
                        <div className='right__side__rowsperage'>
-                        <SelectRowsPerPage rowsPerPage={rowsPerPage} handleSetRowPerPage={handleSetRowPerPage}/>
+                           <MySelect
+                           selectedValue={rowsPerPage} 
+                           handleSelectValue={handleSetRowPerPage}
+                           selectOptions={rowsPerPageOptions}/>
                         </div>
                         <div className='right__side__sortchoice'>
-                            <SelectSort 
-                                        sortChoice={sortChoice}
-                                        handleSortSelect={handleSortSelect}/>
+                            <MySelect
+                            selectedValue={sortChoice} 
+                           handleSelectValue={handleSortSelect}
+                           selectOptions={productSortOption}
+                            />
                         </div>
 
              </div>

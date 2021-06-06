@@ -1,3 +1,4 @@
+import {getAmount} from '../../../../utils/helpers';
 import './PreviewCart.css'
 
 const PreviewCart=({cartItems, removeHandler, history, getCartSubTotal})=>{
@@ -21,7 +22,7 @@ const PreviewCart=({cartItems, removeHandler, history, getCartSubTotal})=>{
 										{item.name}
 									</p>
 									<p className='preview__cart__price__info'>
-										{item.qty} x AED{item.price}
+										{item.qty} x AED{getAmount(item.price)}
 									</p>
 								</div>
 								<div className='preview__cart__remove__item' onClick={()=>removeHandler(item.product)}>
@@ -32,13 +33,13 @@ const PreviewCart=({cartItems, removeHandler, history, getCartSubTotal})=>{
 			}
 		</div>
 			<div className='cart__preview__subtotal__container'>
-				<p className='cart__preview__subtotal'>Subtotal: AED {getCartSubTotal()}</p>
+				<p className='cart__preview__subtotal'>Subtotal: AED {getAmount(getCartSubTotal())}</p>
 			</div>
 			<div className='preview__cart__action__container'>
 				<button className='preview__cart__view__cart' onClick={()=>history.push('/cart')}>
 					View Cart
 				</button>
-				<button className='preview__cart__checkout' onClick={()=>history.push('/checkout')}>
+				<button className='preview__cart__checkout' onClick={()=>history.push({pathname:'/checkout', state:{prev:'legitimatePreviousRoute'}})}>
 					Checkout
 				</button>
 			</div>

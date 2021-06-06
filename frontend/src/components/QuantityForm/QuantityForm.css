@@ -1,0 +1,35 @@
+.cartitem__qty__controller{
+    width: 70px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+    background-color: #f4f4f4;
+
+    /* border: 2px solid red; */
+
+}
+.cartitem__select{
+    height: 100%;
+   width: 50%;
+   text-align: center;
+   border: none;
+   border-left: 1px solid black;
+   border-right: 1px solid black;
+}
+.reduce__qty,
+.increase__qty{
+   /* height: 100%; */
+    width: 25%;
+    text-align: center;
+    cursor: pointer;
+    /* background-color: #f4f4f4; */
+    transition: 0.3s;
+}
+.reduce__qty:hover,
+.increase__qty:hover{
+    font-size: 1.2rem;
+    /* color: white; */
+    /* background-color: black; */
+}

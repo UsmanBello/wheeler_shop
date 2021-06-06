@@ -1,6 +1,6 @@
 
 
-const useData=()=>{
+export const useProductData=()=>{
     const brands= [
     {
         name: 'aFe Power',
@@ -202,4 +202,39 @@ const useData=()=>{
      return { brands, categories};
 }
 
-export default useData;
+export const useSelectOption=()=>{
+    const rowsPerPageOptions= [
+        {key1: '15', key2: '15 Products per page'},
+        {key1: '30', key2: '30 Products per page'},
+        {key1: '45', key2: '45 Products per page'},
+        {key1: '60', key2: '15 Products per page'}
+    ]
+
+    const productSortOption= [
+        {key1: 'latest', key2: 'Sort by latest'},
+        {key1: 'ascending', key2: 'Sort by price: Low to High'},
+        {key1: 'descending', key2: 'Sort by price: High to Low'},
+        {key1: 'sales', key2: 'Sales'},
+
+    ]
+
+    const orderStatusOptions= [
+            {key1: 'allOrders', key2: 'All orders'},
+            {key1: 'inProgress', key2:'In progress'},
+            {key1: 'shipped', key2: 'Shipped'},
+            {key1: 'delivered', key2: 'Delivered'}
+    ]
+
+    const brandOptions= useProductData().brands.map(brand=>{
+        return {key1: brand.name, key2: brand.name}
+    })
+    const allBrandOptions=[{key1: '', key2: 'All Brands'}, ...brandOptions]
+
+   const categoryOptions= useProductData().categories.map(category=>{
+       return { key1: category.main, key2: category.main.split('_').join(' ')}
+   })
+   const allCategoryOptions=[{key1: '', key2:'All Categories'}, ...categoryOptions]
+    return {rowsPerPageOptions, productSortOption, orderStatusOptions, allBrandOptions, allCategoryOptions}
+}
+
+// export default useData;

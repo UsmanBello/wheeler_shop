@@ -13,11 +13,16 @@ const orderSchema = mongoose.Schema({
       required: true
   },
   status: {
-      type: String
+      type: String,
+      default: 'inProgress'
   },
   paymentType:{
     type:String,
     required: true 
+  },
+  transactionStatus: {
+    status: {type: String},
+    message: {type: String}
   },
   shipping: {
       type: String

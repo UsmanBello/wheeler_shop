@@ -1,4 +1,7 @@
 .checkout__screen__header{
+    /* margin: 2px auto; */
+    /* width: 100%; */
+    padding: 2rem auto;
     font-size: 25px;
     color:rgb(125, 125, 125);
     transition: 0.3s;
@@ -13,4 +16,10 @@
 }
 .current__checkout__link{
     color: black;
+}
+
+@media (max-width: 755px){
+    .checkout__screen__header{
+        padding: 0 2rem;
+    }
 }

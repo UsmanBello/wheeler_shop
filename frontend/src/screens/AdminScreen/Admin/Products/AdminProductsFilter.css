@@ -16,6 +16,13 @@
  display: flex;
  justify-content: space-between;
 }
+.left__side{
+ display: flex;
+ /* justify-content: space-between; */
+}
+.admin_product_filter__left__Side__category__filter{
+    margin-left: 10px;
+}
 .right__side__rowsperage{
     margin-right: 10px;
 }

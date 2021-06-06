@@ -1,8 +1,4 @@
 const mongoose = require("mongoose");
-// const domPurifier = require('dompurify');
-// const {JSDOM} = require('jsdom');
-// const htmlPurify= domPurifier(new JSDOM('').window);
-// const htnlStrip = require('string-strip-html');
 
 const productSchema = mongoose.Schema({
  productId: {

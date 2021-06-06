@@ -55,6 +55,7 @@ export const customer = (state = { customers: {fetchedCustomers: [], count:0},cu
         ...state,
         loading: false,
         customers: { fetchedCustomers: [...state.customers.fetchedCustomers, action.payload], count: state.customers.count + 1},
+        customersCount: state.customersCount+1
       };
     case actionTypes.CREATE_CUSTOMER_FAIL:
       return {
@@ -94,11 +95,12 @@ case actionTypes.DELETE_CUSTOMER_REQUEST:
         loading: true,
       };
     case actionTypes.DELETE_CUSTOMER_SUCCESS:
-      const updatedListAfterDelete= state.customers.fetchedCustomers.filter(customer=> customer._id!==action.payload._id)
+      const updatedListAfterDelete= state.customers.fetchedCustomers.filter(customer=> customer._id!==action.payload)
       return {
         ...state,
         loading: false,
-        customers: {fetchedCustomers: updatedListAfterDelete, count: state.customers.count - 1}
+        customers: {fetchedCustomers: updatedListAfterDelete, count: state.customers.count - 1},
+        customersCount: state.customersCount-1
       };
     case actionTypes.DELETE_CUSTOMER_FAIL:
       return {

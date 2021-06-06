@@ -1,6 +1,7 @@
 import * as actionTypes from "../constants/orderConstants";
 import { emptyCart } from './cartActions'
-import axios from "axios";
+import  axiosInstance from '../../utils/api'
+
 
 const config = {
   headers : { 
@@ -13,7 +14,7 @@ export const createOrder = (newOrder) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_ORDER_REQUEST });
   //  console.log(newOrder)
-    const { data } = await axios.post("/api/orders", newOrder, config)
+    const { data } = await axiosInstance.post("/api/orders", newOrder)
     // console.log(data)
 
     dispatch({
@@ -34,11 +35,11 @@ export const createOrder = (newOrder) => async (dispatch) => {
   }
 };
 
-export const updateOrder = (order) => async (dispatch) => {
+export const updateOrder = (orderId, newStatus) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.UPDATE_ORDER_REQUEST });
 
-    const { data } = await axios.put(`/api/orders/${order._id}`, order, config);
+    const { data } = await axiosInstance.put(`/api/orders/${orderId}`, {status: newStatus});
     dispatch({
       type: actionTypes.UPDATE_ORDER_SUCCESS,
       payload: data,
@@ -58,10 +59,10 @@ export const deleteOrder = (orderId) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.DELETE_ORDER_REQUEST });
 
-    const { data } = await axios.delete(`/api/orders/${orderId}`, config);
+     await axiosInstance.delete(`/api/orders/${orderId}`);
     dispatch({
       type: actionTypes.DELETE_ORDER_SUCCESS,
-      payload: data,
+      payload: orderId,
     });
   } catch (error) {
     dispatch({
@@ -75,21 +76,20 @@ export const deleteOrder = (orderId) => async (dispatch) => {
 };
 
 
-export const getOrders = (q, ordersPerPage, pageNumber) => async (dispatch) => {
+export const getOrders = (q, statusSearch, ordersPerPage, pageNumber) => async (dispatch) => {
   
   
   try {
     dispatch({ type: actionTypes.GET_ORDERS_REQUEST });
-      let params = `?searchTerm=${q}&page=${pageNumber}&ordersPerPage=${ordersPerPage}`
-      
-      const { data } = await axios.get("/api/orders"+ params, config);
-        console.log(data)
+      let params = `?searchTerm=${q}&status=${statusSearch}&page=${pageNumber}&ordersPerPage=${ordersPerPage}`
+      const { data } = await axiosInstance.get("/api/orders"+ params);
+       
       dispatch({
         type: actionTypes.GET_ORDERS_SUCCESS,
         payload: data,
       });
+
   } catch (error) {
-    console.log(error)
     dispatch({
       type: actionTypes.GET_ORDERS_FAIL,
       payload:
@@ -104,7 +104,7 @@ export const getCustomerOrders = (id) => async (dispatch) => {
   try{
     console.log(id)
     dispatch({ type: actionTypes.GET_ORDERS_BY_CUSTOMER_REQUEST });
-      const { data } = await axios.get("/api/orders/customer/"+id, config);
+      const { data } = await axiosInstance.get("/api/orders/customer/"+id);
         console.log(data)
       dispatch({
         type: actionTypes.GET_ORDERS_BY_CUSTOMER_SUCCESS,
@@ -126,7 +126,7 @@ export const getOrdersCount = ( ) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.GET_TOTAL_ORDERS_REQUEST });
     
-    const { data } = await axios.get("/api/orders/totalOrders", config);
+    const { data } = await axiosInstance.get("/api/orders/totalOrders");
   
     dispatch({
       type: actionTypes.GET_TOTAL_ORDERS_SUCCESS,
@@ -147,7 +147,7 @@ export const getOrderDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.GET_ORDER_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/orders/${id}`, config);
+    const { data } = await axiosInstance.get(`/api/orders/${id}`);
       console.log(data)
     dispatch({
       type: actionTypes.GET_ORDER_DETAILS_SUCCESS,

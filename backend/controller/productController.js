@@ -47,7 +47,6 @@ exports.createProduct = async function(req,res){
 													 latestUpdate: new Date()
                                                      });
 
-													 console.log(product)
 		    await product.save();
 		    return res.status(200).json(product);
 			}
@@ -62,9 +61,7 @@ exports.createProduct = async function(req,res){
 exports.getProductsCount = async function(req,res){
 	
 	try{
-            // console.log(req.query.searchTerm)
 			  var count= await Product.find().countDocuments()
-			//   console.log(count)
 				return res.status(200).json({totalproducts: count});
 				
 		} catch(err){
@@ -73,21 +70,33 @@ exports.getProductsCount = async function(req,res){
 		}
 	
 }
+exports.getOutStockCount = async function(req, res){
+	try{
+		  var outOfStockCount= await Product.find({countInStock:{$lt:1}}).countDocuments()
+			return res.status(200).json({outOfStockCount});
+			
+	} catch(err){
+		
+		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
+	}
+}
+
 exports.getProducts = async function(req,res){
 	
 	try{
 		const qParams=req.query
-		// if(qParams.searchTerm === 'undefined' && qParams.brand=== 'undefined' && qParams.category=== 'undefined' && qParams.subCategory === 'undefined'){
-		// 			let products = await Product.find({})
-		// 			let count= await Product.find({}).countDocuments()
-		// 			return res.status(200).json({products, count});
-		// }    
+	            
 				const page= +qParams.page || 1; //the plus sign converts it to number
 				const limit= +qParams.productsPerPage || 15;
 				const skipValue= (page-1)* qParams.productsPerPage;
 				const regex = new RegExp(escapeRegex(qParams.searchTerm), 'gi');
 				var query={}
 				var sort={}
+				if(qParams.outOfStock){
+					let products= await Product.find({countInStock:{$lt:1}}).skip(skipValue).limit(Number(qParams.productsPerPage))
+				     let count = await Product.find({countInStock:{$lt:1}}).countDocuments()
+				return res.status(200).json({products, count});
+				}
 				if(qParams.sort){
 				  if(qParams.sort==='latest'){
 					  sort.latestUpdate = -1
@@ -116,7 +125,7 @@ exports.getProducts = async function(req,res){
 				let count = await Product.find({...query}).countDocuments()
 				// let products = await Product.find({$or: [{name: regex},{brand: qParams.brand},{subCategory: qParams.subCategory}]}).skip(skipValue).limit(Number(qParams.productsPerPage))
 				// let count = await Product.find({$or: [{name: regex},{brand: qParams.brand},{subCategory: qParams.subCategory}]}).countDocuments()
-				// console.log(products)
+				
 			
 				return res.status(200).json({products, count});
 		
@@ -126,20 +135,32 @@ exports.getProducts = async function(req,res){
 		}
 	
 }
-exports.getAllBrands =  async function(req, res){
+
+exports.getSomeProducts = async function(req, res){
 	try{
-			let brands = await Product.distinct('brand')
-			return res.status(200).json(brands)
-			
+		
+		const someProducts= await Product.find({ _id: { $in: [...req.query.ids]}});
+		  return res.status(200).json(someProducts)
 	}catch(err){
+		console.log(err.message)
 		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 	}
 }
+// exports.getAllBrands =  async function(req, res){
+// 	try{
+// 			let brands = await Product.distinct('brand')
+// 			return res.status(200).json(brands)
+			
+// 	}catch(err){
+// 		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
+// 	}
+// }
 exports.getProduct = async function(req,res){
 	try{
 		let product = await Product.findById(req.params.productId)
 		return res.status(200).json(product);
 	}catch(err){
+		
 		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 	}
 }
@@ -160,7 +181,6 @@ exports.getRelatedProducts = async function(req, res){
 		 return res.status(200).json(distinctRelatedProducts.slice(0,3))
 
 	}catch(err){
-		console.log(err)
 		return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
 	}
 }
@@ -250,7 +270,6 @@ exports.deleteProduct = async function(req,res){
 				await cloudinary.v2.uploader.destroy(image.imageId);
 			}
 		    }
-			console.log(foundProduct)
 			await foundProduct.remove();
 		    return res.status(200).json({_id: req.params.productId});
 		
@@ -264,7 +283,6 @@ exports.deleteProduct = async function(req,res){
 
 exports.deleteManyProducts = async function(req,res){
 // 	try{
-//    console.log(req.body)
 // 			 await Product.deleteMany({_id: {$in: req.body.list}});
 // 			return res.status(200).json({message: 'Products deleted'});
 // 		} catch(err){

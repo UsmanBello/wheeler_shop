@@ -3,7 +3,7 @@
     padding: 1rem;
     margin-bottom: 8px;
     display: grid;
-    grid-template-columns: 1fr 4fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 4fr 2fr 1fr 2fr 1fr;
     gap: 8px;
     background: #fff;
     border-radius: 2px;
@@ -19,9 +19,9 @@
     color: #dd219e;
 }
 
-.cartitem__select{
+/* .cartitem__select{
     padding: 10px 17px;
-}
+} */
 
 .cartitem__deleteBtn {
     padding: 10px 17px;
@@ -38,6 +38,10 @@
     background: #171717;
     transform: scale(1.2);
 }
+/*-------------QTY SELECT-----------------*/
+
+ 
+/*----------------------------*/
 
 @media (max-width: 700px){
     .cartitem__name{
@@ -66,3 +70,4 @@
         font-size: 0.6rem;
     }
 }
+

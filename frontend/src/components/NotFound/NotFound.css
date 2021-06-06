@@ -1,0 +1,23 @@
+.not__found__container{
+    max-width: 1300px;
+}
+
+.not__found__content{
+ width: 100%;
+ margin-top: 5rem;
+ display: flex;
+ justify-content: center;
+ /* align-items: center; */
+}
+
+.not__found__left__header{
+    font-size: 4rem;
+    color: rgb(105, 104, 102);
+}
+.not__found__right__content{
+    margin-left: 2rem;
+}
+.not__found__right__paragraph{
+    margin-top: 0.5rem;
+    text-align: center;
+}

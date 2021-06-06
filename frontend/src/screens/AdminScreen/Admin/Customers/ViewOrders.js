@@ -2,6 +2,7 @@ import './ViewOrders.css'
 import {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import Modal  from "react-modal";
+import {getAmount} from '../../../../utils/helpers'
 
 
 //ACTION
@@ -21,8 +22,8 @@ useEffect(()=>{
 //  dispatch(getCustomerDetails(customerId))
   dispatch(getCustomerOrders(customerId))
     // } 
-},[dispatch/*, customerId*/])
-
+},[dispatch, customerId])
+console.log(customerOrders)
 return (loading ? <h2>Loading...</h2> : error ? <h2>{error}</h2> : 
     <Modal 
     isOpen={show}
@@ -33,6 +34,7 @@ return (loading ? <h2>Loading...</h2> : error ? <h2>{error}</h2> :
     closeTimeoutMS={100}
      >
     <div className='items__ordered__container'>
+        <div className='table__container'>
             <table className="Item__table" border="0" cellSpacing="0" cellPadding="0"> 
             <thead>
                 <tr className='orderedItems__table__row'>
@@ -51,12 +53,13 @@ return (loading ? <h2>Loading...</h2> : error ? <h2>{error}</h2> :
                                     <td>{order.invoiceNo}</td>
                                     <td>{new Date(order.createdAt).toDateString()}</td>
                                     <td>{order.items.length}</td>
-                                    <td>AED{order.totalCost}</td>
+                                    <td>AED {getAmount(order.totalCost)}</td>
                                 </tr>
                      })
                 }
             </tbody>
             </table>
+            </div>
     </div>
   </Modal>
 )

@@ -1,0 +1,13 @@
+.aboutscreen{
+   max-width: 1300px;
+   margin: 1rem auto;
+}
+.aboutscreen__top{
+    margin: 4rem;/* reduce in small screen*/
+    display: flex;/*change on mobile*/
+    flex-direction: column;
+}
+.aboutscreen__top header{
+    text-align: center;
+    margin-bottom: 2rem;
+}

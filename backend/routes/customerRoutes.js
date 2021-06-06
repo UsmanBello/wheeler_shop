@@ -1,6 +1,6 @@
 const express= require('express'),
 	  router= express.Router(),
-	//   {ensureCorrectUser} = require('../middleware/auth'),
+	  {loginRequired} = require('../middleware/auth'),
 	  { getCustomers,
         getCustomer,
 		getCustomersCount,
@@ -9,15 +9,15 @@ const express= require('express'),
 
 //prefix-- /api/customers
 router.route("/")
-.get(getCustomers)
+.get(loginRequired, getCustomers)
 
 router.route("/totalCustomers")
 .get(getCustomersCount)
 
 router.route("/:customerId")
-.get(getCustomer)
-.put(updateCustomer)
-.delete(deleteCustomer);
+.get(loginRequired, getCustomer)
+.put(loginRequired, updateCustomer)
+.delete(loginRequired, deleteCustomer);
 
 
 

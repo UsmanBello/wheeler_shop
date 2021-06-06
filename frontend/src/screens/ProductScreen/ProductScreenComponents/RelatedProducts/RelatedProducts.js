@@ -14,7 +14,7 @@ const RelatedProducts=({products})=>{
 							   image={product.images[0].image}
 							   name={product.name}
 							   price={product.price} 
-							   description={product.description}
+							   snippet={product.snippet}
 							   productId={product._id}/>
 						    </div>
 				})

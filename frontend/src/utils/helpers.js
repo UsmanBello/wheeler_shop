@@ -1,3 +1,13 @@
+export const getDiscountedAmount=(unitValue, sales)=>{
+      
+        let percent= Number(sales)/100
+        return ((Number(unitValue) - Number(unitValue)*percent)/100).toFixed(2)
+}
+
+export const getAmount=(unitValue)=>{
+   return (Number(unitValue)/100).toFixed(2)
+}
+
 export const extractTerm=(term)=>{
     if(term===undefined){
       return ''

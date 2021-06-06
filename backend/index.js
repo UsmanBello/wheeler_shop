@@ -4,6 +4,8 @@ const connectDB= require('./config/db');
 const productRoutes= require('./routes/productRoutes.js');
 const orderRoutes= require('./routes/orderRoutes');
 const customerRoutes= require('./routes/customerRoutes');
+const requestRoutes= require('./routes/requestRoutes');
+const authRoutes= require('./routes/authRoutes.js');
 const PORT = process.env.PORT || 5000;
 
 connectDB();
@@ -19,6 +21,8 @@ app.post('/',(req, res)=>{
 app.use('/api/products', productRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/customers', customerRoutes)
+app.use('/api/requests', requestRoutes)
+app.use('/api/auth', authRoutes)
 
 
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`))

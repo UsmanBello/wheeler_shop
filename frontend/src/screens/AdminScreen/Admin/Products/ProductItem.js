@@ -1,5 +1,5 @@
 // import './Products.css'
-
+import {getAmount} from '../../../../utils/helpers'
 const ProductItem =({product, handleEditToggle, handleDeleteToggle}) => {
     return (
                  <tr className="table__row">
@@ -9,7 +9,7 @@ const ProductItem =({product, handleEditToggle, handleDeleteToggle}) => {
                                      <img src={product.images[0].image}
                                           alt={product.name}/>
                                      </td>
-                                     <td>{product.price}</td>
+                                     <td>{getAmount(product.price)}</td>
                                      <td>{product.countInStock}</td>
                                      <td className='hide__at__mobile'>{product.brand}</td>
                                      <td>{product.category.split('_').join(' ')}</td>

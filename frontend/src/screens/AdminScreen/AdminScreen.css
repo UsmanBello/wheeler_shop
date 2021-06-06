@@ -23,6 +23,11 @@
 display: flex;
 justify-content: space-between;
 }
+.out__of__stock__count__link{
+ color: rgb(74, 4, 4);
+ cursor: pointer;
+ text-decoration: underline;
+}
 
 
 @media (max-width: 1300px) {

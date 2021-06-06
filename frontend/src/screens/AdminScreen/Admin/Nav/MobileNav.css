@@ -7,8 +7,8 @@
    }
 
    .mobile__admin__nav > div{
-   /* width: 100%; */
-	height: 3px;
+   width: 100%;
+    height: 3px;
 	background: #3f3f3f;
    }
    .mobile__menu__options{
@@ -40,4 +40,4 @@
         justify-content: space-between;
     }
 
-   }
+   } 

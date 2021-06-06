@@ -1,13 +1,9 @@
 
-import{useState} from 'react';
+import {getAmount} from '../../../utils/helpers';
 import './YourOrder.css'
 
 const YourOrder=({shippingOption, changeShippingOption, subTotal, cartItems})=>{
-var items=[{name: 'product name', qty:'2', subtotal:'500'},
-{name: 'product name2', qty:'3', subtotal:'600'},
-{name: 'product name3', qty:'4', subtotal:'700'}]
-const total=500
-// const [formData, setFormData]= useState({shipping: 'flatRate'})
+
 
     return(
          <div className='yourorder__container'>
@@ -26,7 +22,7 @@ const total=500
                                         <p>{item.name}<span>{' '}x {item.qty}</span></p>
                                     </div>
                                     <div className='summary__right price'>
-                                        <p>AED {item.price}.00</p>
+                                        <p>AED {getAmount(item.price)}</p>
                                     </div>
                                 </div>
                        })}
@@ -72,7 +68,7 @@ const total=500
                             <p>Total</p>
                         </div>
                         <div className='total__right'>
-                            {shippingOption==='flatRate' && <p>AED {(Number(subTotal)+60)+'.00'}</p>}
+                            {shippingOption==='flatRate' && <p>AED {getAmount((subTotal*100)+6000)}</p>}
                             {shippingOption==='localPickup' && <p>AED {subTotal}</p>}
 
                         </div>

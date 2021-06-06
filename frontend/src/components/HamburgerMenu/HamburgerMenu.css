@@ -1,0 +1,48 @@
+.hamburger__menu{
+    width: 30px;
+    height: 30px;
+    display: none;
+    align-items: center;
+    cursor: pointer;
+}
+.hamburger__menu__admin{
+    width: 30px;
+    height: 20px;
+    display: none;
+    align-items: center;
+    cursor: pointer;
+}
+
+.hamburger__menu > div{
+    width: 100%;
+    height: 3px;
+    background-color: #ad0207;
+}
+.hamburger__menu__admin > div{
+    width: 100%;
+    height: 3px;
+     background-color: black;
+}
+
+.hamburger__menu:hover > div{
+    background: #ad0207;
+}
+
+@media (max-width: 960px){
+    .hamburger__menu{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .hamburger__menu__admin{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+@media (max-width: 560px){
+    .hamburger__menu{
+        width: 25px;
+        height: 20px;
+    }
+}

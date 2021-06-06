@@ -1,0 +1,97 @@
+.requests{
+    width:100%;
+    margin-top: 20px;
+}
+
+.requests__header{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.requests__header__left{
+ display: flex;
+ align-self: flex-end;
+}
+
+.requests__header .search__container{
+    flex: 0.6;
+} 
+
+.requests__table__container{
+    margin-top: 20px;
+    width: 100%;
+}
+.requests__table{
+    width: 100%;
+}
+.requests__table thead tr th{
+  height: 30px;
+  border-top: 1px solid #797a7a;
+  border-bottom: 1px solid #797a7a;
+}
+
+.requests__table tbody tr{
+    height: 80px;
+}
+.requests__table tbody tr td{
+    text-align: center;
+}
+.requests__table tbody tr:nth-child(odd){
+ background-color: #dbdbdb;
+}
+.admin__actions__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.admin__delete__button{
+    background-color: 	rgb(217, 83, 79);
+    padding:6px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.found__results{
+    margin-top: 20px;
+    text-align: center;
+}
+.clear__Search{
+    color:purple;
+    cursor: pointer;
+}
+
+
+@media (max-width: 700px) {
+    .requests{
+        font:0.5rem;
+    }
+    .requests__header{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+    }
+    .requests__header .search__container{
+        flex: 1
+        
+    } 
+    .requests__header__left{
+        flex: 1;
+        order: 2;
+        margin-top: 10px;
+    }
+    .requests__header__right__select__rows{
+        margin-left: 0px;
+    }
+    .hide__at__mobile{
+        display: none;
+    }
+    .same{
+        width: 22%;
+    }
+}

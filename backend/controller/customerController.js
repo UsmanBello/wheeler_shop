@@ -1,5 +1,5 @@
-const Customer= require('../models/Customer')
-
+const Customer= require('../models/Customer');
+const Order = require('../models/Order');
 exports.getCustomersCount = async function(req,res){
 	
 	try{
@@ -14,22 +14,23 @@ exports.getCustomersCount = async function(req,res){
 }
 exports.getCustomers = async function(req,res){
 	try{
-		console.log(req.query)
+		
 		const qParams=req.query
 		const page= +qParams.page || 1;
 		const skipValue= (page-1)* qParams.customersPerPage;
-		var regex 
+		// var regex 
 		var query={}
-		var sort= qParams.sort === 'alphabetical' ? {fullName: 1} : {lastUpdated: -1}
+		// var sort= qParams.sort === 'alphabetical' ? {fullName: 1} : {lastUpdated: -1}
 		
 		if(qParams.searchTerm){
-			regex= new RegExp(escapeRegex(qParams.searchTerm), 'gi');
-			qParams.searchTerm ? query.fullName=regex : null
+			// regex= new RegExp(escapeRegex(qParams.searchTerm), 'gi');
+			 query.firstName=qParams.searchTerm 
+			//  query.lastName = qParams.searchTerm
+			//  query.email= qParams.searchTerm
 		}
-
-		let customers= await Customer.find({...query}).sort({...sort}).skip(skipValue).limit(Number(qParams.customersPerPage))
+		let customers= await Customer.find({...query}).sort({lastUpdated: -1}).skip(skipValue).limit(Number(qParams.customersPerPage))
 		let count = await Customer.find({...query}).countDocuments()
-		console.log(customers)
+		
 		return res.status(200).json({customers, count});
 
 		} catch(err){
@@ -61,7 +62,8 @@ exports.updateCustomer = async function(req,res){
 
 exports.deleteCustomer = async function(req,res){
 	try{
-
+            let orders= await Order.find({customer: req.params.customerId})
+			await Order.deleteMany({_id: {$in: orders.map(order=>order._id)}});
 			let foundCustomer = await Customer.findById(req.params.customerId) 
 			await foundCustomer.remove();
 		    return res.status(200).json({message: 'Customer deleted'});

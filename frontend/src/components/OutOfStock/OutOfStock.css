@@ -1,0 +1,8 @@
+.outofstock__badge{
+    background: rgba(255,255,255,0.9);
+    padding: 15px 0;
+    text-align: center; 
+    opacity: .8;
+    width: 100%;
+    font-weight: bold;
+}

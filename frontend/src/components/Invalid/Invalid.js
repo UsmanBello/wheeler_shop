@@ -29,7 +29,7 @@ const Invalid = ({ field, display }) => {
   const Qty = (<p  style={messageStyle}><strong>Quantity</strong> must contain only <strong>digits</strong>.</p>);
   const sales= (<p  style={messageStyle}><strong>Sales</strong> must contain only <strong>digits</strong>.</p>)
   const price= (<p  style={messageStyle}><strong>Price</strong> must contain only <strong>digits</strong>.</p>)
-
+  const missMatch=(<p  style={messageStyle}><strong>Passwords</strong> dont match. Please enter matching <strong>passwords</strong>.</p>)
   return (
     <>
       {field === "Email" && email}
@@ -38,6 +38,7 @@ const Invalid = ({ field, display }) => {
       {field==="Quantity" && Qty}
       {field==="sales" && sales}
       {field==="Price" && price}
+      {field==="Confirm Password" && missMatch }
     </>
   );
 };

@@ -8,29 +8,22 @@
     display: flex;
     justify-content: space-between;
 }
-/* .products__header .search__container{
-    flex: 0.6
-} */
-/* .products__header .add__button{
-    background-color: 	#171717;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    border:none;
-    cursor: pointer;
-} */
+
+.orders__header__left{
+ display: flex;
+ align-self: flex-end;
+}
+.orders__header__right__select__rows{
+    margin-left: 20px;
+}
+.orders__header .search__container{
+    flex: 0.6;
+} 
 
 .orders__table__container{
     margin-top: 20px;
-    /* margin-bottom: 20px; */
     width: 100%;
 }
-/* .products__table__container__mobile{
-    display: none;
-  }
-.table__row__mobile{
-    display: none;
-} */
 .orders__table{
     width: 100%;
 }
@@ -84,57 +77,28 @@
     color:purple;
     cursor: pointer;
 }
-/* .admin__products__filter{
-    width: 100%;
-    margin-top: 15px;
-} */
 
-/*======PAGE COMPONENT TO BE TRANSFERED=======*/
-.page__component__container{
-    margin: 20px auto;
-}
-.pagination__btns{
-    width: 80%;
-    height: 40px;
-    list-style: none;
-    display: flex;
-    justify-content: center;
-}
-.pagination__btns a {
-    padding: 10px;
-    margin: 3px;
-    border:1px solid black;
-    border-radius: 5px;
-    color: black;
-    cursor: pointer;
-}
-.pagination__btns a:hover{
-    background-color: black;
-    color: white;
-}
-.pagination__active a{
-    background-color: black;
-    color: white;
-} 
 @media (max-width: 700px) {
-    .products__header{
+    .orders__header{
         display: flex;
         flex-direction: column;
-        /* justify-content: space-around; */
-    }
-    /* .products__header .add__button{
-        align-self: start;
-    } */
-    /* .products__header .search__container{
-        margin-top: 10px;
-    } */
-    /* .hide__at__mobile{
-        display: none;
-    }
-    .same{
-        width:18%;
-    } */
+        justify-content: space-between;
+    /* align-items: flex-start; */
 
+    }
+    .orders__header .search__container{
+        flex: 1
+        
+    } 
+    .orders__header__left{
+        flex: 1;
+        order: 2;
+        margin-top: 10px;
+    }
+    .orders__header__right__select__rows{
+        margin-left: 10px;
+    }
+   
 }
 @media (max-width: 700px){
     .orders{

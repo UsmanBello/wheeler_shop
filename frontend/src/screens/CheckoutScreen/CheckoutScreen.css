@@ -1,6 +1,6 @@
 .checkout__screen{
     max-width: 1300px;
-    margin: 2rem;
+    margin: 2rem auto;
     display: flex;
     flex-direction: column;
     align-items: center; 
@@ -25,4 +25,24 @@
 .shrink{
     display: none;
     flex:0;
+}
+@media (max-width: 1320px){
+    .checkout__screen{
+        max-width: 1200px;
+    }
+}
+
+@media (max-width: 960px){
+    .checkout__screen{
+        max-width: 800px;
+        flex-direction: column;
+    }
+    .checkout__screen__content{
+        display: flex;
+        flex-direction: column;
+    }
+    .invoice__info{
+        order:  -1;
+    }
+   
 }

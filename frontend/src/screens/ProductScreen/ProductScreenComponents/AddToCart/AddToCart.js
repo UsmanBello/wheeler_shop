@@ -1,33 +1,70 @@
-
-
+import { useState } from 'react';
+import {getAmount, getDiscountedAmount} from '../../../../utils/helpers';
 import './AddToCart.css'
 
-const AddToCart=({product, qty, handleQtyChange, addToCartHandler, loadingToCart})=>{
+//COMPONENT
+import QuantityForm from '../../../../components/QuantityForm/QuantityForm'
+
+const AddToCart=({product, qty, handleQtyChange, addToCartHandler, loadingToCart, showRequestModal})=>{
 	
+  const [quantity, setQuantity]=useState(qty)
+
+ 
+  const increaseQty=()=>{
+    let val = quantity
+       if(val+1 <= product.countInStock){
+         setQuantity(val+1)
+         handleQtyChange(val+1)
+       }
+  }
+  const decreaseQty=()=>{
+    let val = quantity
+    if(val-1 >0){
+     
+      setQuantity(val-1)
+      handleQtyChange(val-1)
+    }
+  }
 	return (<div className='product__addToCart'>
 			      <p className='product__name'>
 					  {product.name}
 				  </p>
+                {product.sales > 0 ?
+                <>
+                    <p>
+                    Price: <span><span className='old__price'>AED {getAmount(product.price)}</span><br/><span className='current__price'> AED {getDiscountedAmount(product.price, product.sales)}</span></span>
+                   </p>
+                </>
+                :
                   <p>
-                    Price: <span> ${product.price}</span>
-                  </p>
+                   Price: <span className='current__price'> AED {getAmount(product.price)}</span>
+                  </p>}
+
                   <p>
-                    status: <span>{product.countInStock > 0 ? 'In stock' : 'Out of stock'}</span>
+                    status: <span>{product.countInStock > 0 ? `${product.countInStock} in stock` : 'Out of stock'}</span>
                   </p>
                   <p>
                     Qty
-                    <select value={qty} onChange={(e)=>handleQtyChange(e)}>
-                    {[...Array(product.countInStock).keys()].map((x) => (
-                    <option key={x + 1} value={x + 1}>
-                      {x + 1}
-                    </option>
-                  ))}
-                    </select>
+                    <QuantityForm 
+                    qty={quantity}
+                    increaseQty={increaseQty}
+                    decreaseQty={decreaseQty}
+                    />
+                   
                   </p>
                   <p>
-                    <button type='button' onClick={()=>addToCartHandler()}  disabled={loadingToCart}>
-						{loadingToCart ? 'Loading...' : 'Add to cart'}</button>
+                  {product.countInStock> 0 ?
+                   <button type='button' 
+                   onClick={()=>addToCartHandler()} 
+                    disabled={loadingToCart}>
+						              {loadingToCart ? 'Loading...' : 'Add to cart'}
+                      </button>: 
+                      <button onClick={()=>showRequestModal()}>
+                         Request Product
+                      </button>
+                }
                   </p>
               </div>)
 }
 export default AddToCart
+                    

@@ -1,7 +1,8 @@
 import './FilterComponent.css';
-import useData from '../../../utils/useData';
+import {useSelectOption, useProductData} from '../../../utils/hooks';
 //Component
 import SearchComponent from '../../../components/Search/SearchComponent';
+import MySelect from '../../../components/SelectInput/MySelect';
 
 
 const FilterComponent =({
@@ -16,7 +17,8 @@ const FilterComponent =({
     handleSubCategorySelected}) => {
 
 
- const { brands, categories }= useData();      
+ const { allBrandOptions }= useSelectOption(); 
+ const {categories} = useProductData();     
 
  const handleClicked=(e)=>{
      if(e.target.parentNode.nextSibling.classList.contains("hide__sublist")){
@@ -39,8 +41,8 @@ const FilterComponent =({
     handleKeyDown(e)
     click && click()
  }
- const handleBrandChangeHere=(e)=>{
-    handleBrandChange(e)
+ const handleBrandChangeHere=(value)=>{
+    handleBrandChange(value)
     click && click()
  }
  const handleMainCategorySelectedHere=(mainCategory)=>{
@@ -62,13 +64,12 @@ const FilterComponent =({
                      </div>
                      <div className='product__brand__filter'>
                         <h3>FILTER BY BRAND</h3>
-                         <select className='select__input' value={brandInput} onChange={(e)=>handleBrandChangeHere(e)}>
-                            <option value=''>Any Brand</option>
-                            {
-                             brands.map((brand, index)=>{
-                                 return <option key={index} value={brand.name}>{brand.name}</option>
-                             })}
-                         </select>
+                         <MySelect
+                          selectedValue={brandInput}
+                          handleSelectValue={handleBrandChangeHere}
+                          selectOptions={allBrandOptions}
+                          styleClass={'select__input'}
+                         />
                      </div>
                      <div className='product__category__filter'>
                         <h3>PRODUCT CATEGORIES</h3> 
@@ -100,3 +101,11 @@ const FilterComponent =({
   }
   
   export default FilterComponent;
+
+//   <select className='select__input' value={brandInput} onChange={(e)=>handleBrandChangeHere(e)}>
+//                             <option value=''>Any Brand</option>
+//                             {
+//                              brands.map((brand, index)=>{
+//                                  return <option key={index} value={brand.name}>{brand.name}</option>
+//                              })}
+//                          </select>

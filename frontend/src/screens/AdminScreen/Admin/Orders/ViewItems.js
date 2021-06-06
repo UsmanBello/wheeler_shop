@@ -1,6 +1,6 @@
 import './ViewItems.css'
 import Modal  from "react-modal";
-
+import {getAmount } from '../../../../utils/helpers';
 Modal.setAppElement("#root");
 
 const ViewItems =({show, cancel, items}) => {
@@ -30,10 +30,10 @@ const ViewItems =({show, cancel, items}) => {
                                             items.map((item, index)=>{
                                                 return  <tr className="orderedItems__table__row" key={index}>
                                                             <td>{index+1}</td>
-                                                            <td>{item.product}</td>
+                                                            <td>{item.product || ''}</td>
                                                             <td>{item.qty}</td>
-                                                            <td>AED{item.price}</td>
-                                                            <td>AED{item.price * item.qty}</td>
+                                                            <td>AED {getAmount(item.price)}</td>
+                                                            <td>AED {getAmount(item.price) * item.qty}</td>
                                                         </tr>
                                              })
                                             

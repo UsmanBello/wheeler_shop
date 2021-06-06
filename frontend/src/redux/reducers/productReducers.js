@@ -1,32 +1,54 @@
 import * as actionTypes from "../constants/productConstants";
 export const product = (state = {
    products: {fetchedProducts: [], count:0},
+   someProducts: [],
    relatedProducts: [],
   productsCount: 0,
- product:{  name:'', description: '', price: 0, brand:'', countInStock: 0, productId: '', images: [{image: '',imageId: ''}], category: '', subCategory: '', sales: 0
+  outOfStockCount: 0,
+  product:{  name:'', description: '', price: 0, brand:'', countInStock: 0, productId: '', images: [{image: '',imageId: ''}], category: '', subCategory: '', sales: 0
 	 },
- relatedProducts:[],
    brands: [],
-    loading: true, 
+   loading: true,
+    loadingProducts: true, 
+    loadingProductsCount: true,
     error: '' },
      action) => {
 
 
   switch (action.type) {
-    //GET PRODUCT
+    //GET PRODUCTS
     case actionTypes.GET_PRODUCTS_REQUEST:
       return {
         ...state,
-        loading: true,
-        
+        loadingProducts: true,
+        error:''
       };
     case actionTypes.GET_PRODUCTS_SUCCESS:
       return {
         ...state,
         products: {fetchedProducts: action.payload.products ,count: action.payload.count},
-        loading: false,
+        loadingProducts: false,
       };
     case actionTypes.GET_PRODUCTS_FAIL:
+      return {
+        ...state,
+        loadingProducts: false,
+        error: action.payload,
+      };
+    //GET SOME PRODUTS 
+    case actionTypes.GET_SOME_PRODUCTS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error:''
+      };
+    case actionTypes.GET_SOME_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        someProducts: action.payload,
+        loading: false,
+      };
+    case actionTypes.GET_SOME_PRODUCTS_FAIL:
       return {
         ...state,
         loading: false,
@@ -93,6 +115,7 @@ export const product = (state = {
         ...state,
         loading: false,
         products: { fetchedProducts: [...state.products.fetchedProducts, action.payload], count: state.products.count + 1 },
+        productsCount: state.productsCount+1
       };
     case actionTypes.CREATE_PRODUCT_FAIL:
       return {
@@ -136,9 +159,29 @@ case actionTypes.DELETE_PRODUCT_REQUEST:
       return {
         ...state,
         loading: false,
-        products: { fetchedProducts: updatedListAfterDelete, count: state.products.count - 1}
+        products: { fetchedProducts: updatedListAfterDelete, count: state.products.count - 1},
+        productsCount: state.productsCount-1
       };
     case actionTypes.DELETE_PRODUCT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+      //GET OUT OF STOCK COUNT 
+      case actionTypes.GET_OUT_OF_STOCK_COUNT_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        
+      };
+    case actionTypes.GET_OUT_OF_STOCK_COUNT_SUCCESS:
+      return {
+        ...state,
+        outOfStockCount: action.payload,
+        loading: false,
+      };
+    case actionTypes.GET_OUT_OF_STOCK_COUNT_FAIL:
       return {
         ...state,
         loading: false,
@@ -148,19 +191,19 @@ case actionTypes.DELETE_PRODUCT_REQUEST:
     case actionTypes.GET_TOTAL_PRODUCTS_REQUEST:
       return {
         ...state,
-        loading: true,
+        loadingProductsCount: true,
         
       };
     case actionTypes.GET_TOTAL_PRODUCTS_SUCCESS:
       return {
         ...state,
         productsCount: action.payload,
-        loading: false,
+        loadingProductsCount: false,
       };
     case actionTypes.GET_TOTAL_PRODUCTS_FAIL:
       return {
         ...state,
-        loading: false,
+        loadingProductsCount: false,
         error: action.payload,
       };
     default:

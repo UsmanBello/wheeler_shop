@@ -13,6 +13,7 @@ export const order = (state = {
       return {
         ...state,
         loading: true,
+        error: ''
       };
     case actionTypes.GET_ORDERS_SUCCESS:
       console.log(action.payload)
@@ -20,6 +21,7 @@ export const order = (state = {
         ...state,
         orders: {fetchedOrders: action.payload.orders ,count: action.payload.count},
         loading: false,
+        
       };
     case actionTypes.GET_ORDERS_FAIL:
       return {
@@ -32,6 +34,7 @@ export const order = (state = {
       return {
         ...state,
         loading: true,
+        error: ''
       };
     case actionTypes.GET_ORDER_DETAILS_SUCCESS:
       return {
@@ -55,6 +58,7 @@ export const order = (state = {
       return {
         ...state,
         loading: true,
+        error:''
       };
     case actionTypes.GET_ORDERS_BY_CUSTOMER_SUCCESS:
       return {
@@ -79,6 +83,7 @@ export const order = (state = {
       return {
         ...state,
         loading: true,
+        error: ''
       };
     case actionTypes.CREATE_ORDER_SUCCESS:
       // console.log(action.payload)
@@ -87,6 +92,8 @@ export const order = (state = {
         loading: false,
         order: action.payload,
         orders: { fetchedOrders: [...state.orders.fetchedOrders, action.payload], count: state.orders.count+1 },
+        ordersCount: state.ordersCount+1
+
       };
     case actionTypes.CREATE_ORDER_FAIL:
       return {
@@ -99,6 +106,7 @@ export const order = (state = {
       return {
         ...state,
         loading: true,
+        error:''
       };
     case actionTypes.UPDATE_ORDER_SUCCESS:
       const updatedList= state.orders.fetchedOrders.map(order=>{
@@ -124,13 +132,15 @@ case actionTypes.DELETE_ORDER_REQUEST:
       return {
         ...state,
         loading: true,
+        error:''
       };
     case actionTypes.DELETE_ORDER_SUCCESS:
-      const updatedListAfterDelete= state.orders.fetchedOrders.filter(order=> order._id!==action.payload._id)
+      const updatedListAfterDelete= state.orders.fetchedOrders.filter(order=> order._id!==action.payload)
       return {
         ...state,
         loading: false,
-        orders: {fetchedOrders: updatedListAfterDelete, count: state.orders.count - 1/* GET THE REAL VALUE */}
+        orders: {fetchedOrders: updatedListAfterDelete, count: state.orders.count - 1/* GET THE REAL VALUE */},
+        ordersCount: state.ordersCount-1
       };
     case actionTypes.DELETE_ORDER_FAIL:
       return {

@@ -1,27 +1,33 @@
 const express= require('express'),
 	  router= express.Router(),
-	//   {ensureCorrectUser} = require('../middleware/auth'),
-	  
-	  
+	  { loginRequired } = require('../middleware/auth'),
 	  { getProducts,
         getProduct,
 		getProductsCount,
+		getSomeProducts,
 	    getRelatedProducts,
+		getOutStockCount,
         updateProduct,
 	    createProduct,
 		deleteProduct, 
 	    deleteManyProducts }= require('../controller/productController');
-
+		
 //prefix-- /api/appointments
 router.route("/")
 .get(getProducts)
-.post(createProduct)
-.delete(deleteManyProducts);
+.post(loginRequired, createProduct)
+.delete(loginRequired, deleteManyProducts);
 
 
+router.route("/out-of-stock-count")
+.get(getOutStockCount)
+
+router.route("/some-products")
+.get(getSomeProducts)
 
 router.route("/totalProducts")
 .get(getProductsCount)
+
 
 router.route("/related-products/:productId")
 .get(getRelatedProducts)
@@ -30,8 +36,8 @@ router.route("/related-products/:productId")
 
 router.route("/:productId")
 .get(getProduct)
-.put(updateProduct)
-.delete(deleteProduct);
+.put(loginRequired, updateProduct)
+.delete(loginRequired, deleteProduct);
 
 
 

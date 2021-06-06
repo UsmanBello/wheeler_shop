@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {  faFileAlt, faShoppingCart, faTable, faUser} from '@fortawesome/free-solid-svg-icons'
 import './MobileNav.css'
 
 const MobileNav =({handleNavigationClick, active, handleToggleMobileNav, showMobileMenu}) => {
@@ -11,34 +13,30 @@ const MobileNav =({handleNavigationClick, active, handleToggleMobileNav, showMob
         <ul className= "mobile__menu__options">
         <li className={active==='dashboard' ? 'mobile__menu__item active' : 'mobile__menu__item'} 
                         onClick={()=>handleNavigationClick('dashboard')}>
-                            <i className="fa fa-table" aria-hidden="true"/>{' '}
+                            <FontAwesomeIcon icon={faTable}/>{' '}
                             Dashboard
-                        </li>
-                        <li className={active==='orders' ? 'mobile__menu__item active' : 'mobile__menu__item'}
-                        onClick={()=>handleNavigationClick('orders')}>
-                            <i className="fa fa-file" aria-hidden="true"/>{' '}
-                        Orders
                         </li>
                         <li className={active==='products' ? 'mobile__menu__item active' : 'mobile__menu__item'}
                         onClick={()=>handleNavigationClick('products')}>
-                                <i className="fa fa-shopping-cart" aria-hidden="true"/>{' '}
+                                <FontAwesomeIcon icon={faShoppingCart}/>{' '}
                                 Products
                         </li>
-                        {/* <li className={active=== 'brands' ? 'mobile__menu__item active' : 'mobile__menu__item'}
-                        onClick={()=>handleNavigationClick('brands')}>
-                                <i className="fa fa-shopping-cart" aria-hidden="true"/>{' '}{' '}
-                                Brands
+                        <li className={active==='orders' ? 'mobile__menu__item active' : 'mobile__menu__item'}
+                        onClick={()=>handleNavigationClick('orders')}>
+                            <FontAwesomeIcon icon={faFileAlt}/>{' '}
+                        Orders
                         </li>
-                        <li className={active=== 'categories' ? 'mobile__menu__item active' : 'mobile__menu__item'}
-                        onClick={()=>handleNavigationClick('categories')}>
-                            <i className="fa fa-shopping-cart" aria-hidden="true"/>{' '}
-                            Categories
-                        </li> */}
+                        <li className={active==='requests' ? 'mobile__menu__item active' : 'mobile__menu__item'}
+                        onClick={()=>handleNavigationClick('requests')}>
+                                <FontAwesomeIcon icon={faFileAlt}/>{' '}
+                                Requests
+                        </li>
                         <li className={active==='customers' ? 'mobile__menu__item active' : 'mobile__menu__item'}
                         onClick={()=>handleNavigationClick('customers')}>
-                             <i className="fa fa-users" aria-hidden="true"/>{' '}
+                             <FontAwesomeIcon icon={faUser}/>{' '}
                             Customers
                         </li>
+                      
     </ul>}
     </div>
     

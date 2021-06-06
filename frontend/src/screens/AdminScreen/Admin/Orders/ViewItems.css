@@ -1,12 +1,15 @@
 .items__ordered__container{
     margin-top: 20px;
-    width: 600px;
+    height: 50px;
+    /* width: 600px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
 }
 .Item__table{
-    width: 80%
+    max-height: 50px;
+    overflow-y: scroll;
+    /* width: 80% */
 }
 .Item__table thead tr th{
     height: 30px;

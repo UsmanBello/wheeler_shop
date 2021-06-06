@@ -15,32 +15,40 @@ top:auto;
 
 .side__menu__item{
     margin:10px auto;
+    color: black;/*rgb(74, 4, 4);*/
+    font-weight: bold;
+    margin-bottom: 20px;
+    line-height: 1rem;
+    font-size: 1.2rem;
 }
 
 .side__menu__item:hover{
     cursor: pointer;
-    color: rgb(2, 117, 216);
+    color: rgb(74, 4, 4);/*black;*
+    /* color: rgb(2, 117, 216); */
 }
 
 .admin__menu  .fa{
+    font-size: 1.5rem;
     color: transparent;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;/*rgb(74, 4, 4);*/
     
 }
 .side__menu__item:hover > .fa{
+    /* color:black; */
     color: transparent;
     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: rgb(2, 117, 216);
+    -webkit-text-stroke-color:rgb(74, 4, 4);/* black;*/
 }
 .active{
-    color:rgb(2, 117, 216);
+    color:rgb(74, 4, 4);/*black;*/
 }
 .active > .fa{
     
     color: transparent;
     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color:rgb(2, 117, 216);/*#29b8ff*/
+    -webkit-text-stroke-color:rgb(74, 4, 4);/*black;*/
 }
 
   

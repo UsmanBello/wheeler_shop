@@ -2,3 +2,21 @@
     cursor: pointer;
     text-decoration: underline;
 }
+
+.transaction__success__badge{
+ padding: 5px;
+ background-color: rgba(21, 138, 0, 0.3);
+ color:rgb(21, 138, 0) ;
+ font-size: 0.7rem;
+ border-radius: 5px;
+ cursor: pointer;
+}
+
+.transaction__failure__badge{
+ padding: 5px;
+ background-color: rgba(255, 0, 0, 0.3);
+ color: rgb(255, 0, 0);
+ font-size: 0.7rem;
+ border-radius: 5px;
+ cursor: pointer;
+}

@@ -1,0 +1,64 @@
+.authscreen__container{
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+}
+.auth__form__container{
+ margin-top:50px;
+margin-bottom:100px;
+ background-color: white;
+width: 400px;
+padding: 10px 20px;
+border-radius: 10px;
+}
+
+.auth__form{
+ border: none;
+ margin-top:0px;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+}
+
+.auth__form__header{
+ text-align: center;
+ font-weight: bold;
+ font-size: 1.5rem;
+ margin-bottom: 1rem;
+}
+
+.auth__form__input__row{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+.auth__form__label{
+ margin-bottom: 0.3rem;
+}
+.auth__input{
+  height: 35px;
+  padding: 0 10px;
+}
+.auth__input__error{
+    height: 35px;
+  padding: 0 10px;
+  border-color: red;
+}
+
+.auth__form__button{
+    padding: 10px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    border:none;
+}
+.auth__form__button:hover{
+   background-color: rgba(0, 0, 0, 0.7);
+}
+
+.auth__forgot__password__link{
+    color: rgb(74, 4, 4);
+    margin-top:1rem;
+    text-align: right;
+    cursor: pointer;
+}

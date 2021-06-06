@@ -11,21 +11,15 @@ const mailgun = require('mailgun-js')({apiKey: process.env.MAILGUN_API_KEY,
 	domain: process.env.MAILGUN_DOMAIN});
 const path=require('path');
 
+const { concatProductNames } = require('../helpers')
+
+var currentId=''
+
 // const filePath= path.join(__dirname,'../../', 'invoice.pdf');
 // var file = fs.readFileSync(filePath);
 // var attch = new mailgun.Attachment({data: file, filename: "invoice.pdf",  contentType: "application/pdf"});
 
 exports.createOrder = async function(req,res){
-	try{   
-		
-		//Find the purchased products
-		//If any of the data is not inserted correctly, return error(eg if customer email is associated with othe name)
-		//If products qty is less than qty purchsed, return error with out of stock of the products if not, update countInStock
-		//Create payment
-		//If payment is completed, create order, customer and then sendEmail
-
-		//Error handling
-		console.log(req.body)
 		if(!req.body.customer.firstName){
 			return res.status(400).json({ message: "First name is required."})
 		}
@@ -51,10 +45,8 @@ exports.createOrder = async function(req,res){
 			return res.status(400).json({message: "Phone number is required."})
 		}
 
-		const orderId = nanoid(15)
-		console.log(orderId)
-        console.log(req.body)
-
+		
+		try{ 
 			let purchacedProducts= await Product.find({ 
 				_id: {
 					$in: [...req.body.items.map(item=>item.product)]
@@ -62,38 +54,30 @@ exports.createOrder = async function(req,res){
 			});
 			var orderObjects=[]
 			var totalCost=0
+			var countInStockAfterPurchase=[]
+            var outOfStock=[]
 
-			req.body.items.forEach(async (item,index)=>{
-				try{
+			req.body.items.forEach((item,index)=>{
 				//Getting each product from database
 				var thisProduct=(purchacedProducts.filter(product=> product._id.toString()===item.product.toString()))[0]
 				//Checking if product is available and updating count in stock after sales
-				if(thisProduct.countInStock < item.qty){
-					if(thisProduct.countInStock === 0){
-					return res.status(400).json({message: `${thisProduct.name} is out of stock.`})
-					}else{
-						return res.status(400).json({message: `Sorry, ${thisProduct.name} is only ${thisProduct.countInStock} in stock.`})
-					}
+				if(Number(thisProduct.countInStock) < Number(item.qty)){
+					outOfStock.push(thisProduct.name)
 				}else{
-					let remainingInStock= thisProduct.countInStock - item.qty
-					await Product.findOneAndUpdate({_id: thisProduct._id}, {...req.body, countInStock: remainingInStock}, {new: true})
+					let remainingInStock= Number(thisProduct.countInStock) - Number(item.qty)
+					countInStockAfterPurchase[index]={_id: thisProduct._id, remainingInStock}
 				}
 				//Creating info needed to be saved in the Order collection
 				orderObjects[index]= {product: thisProduct.name,  price: Number(thisProduct.price), qty: Number(item.qty)} 
 				totalCost+= (item.qty * thisProduct.price)
-			}catch(e){
-				console.log(e)
-				return res.status(400).json({message: e.message})
-			}
+			
 			})
+				//exit from purchase if product out of stock
+			if(outOfStock.length > 1){
+				const outOfStockProductsNames= concatProductNames(outOfStock)
+				return res.status(400).json({message: `These products are out of stock or have less quantity than you ordered-( ${outOfStockProductsNames} ).`})
+			}
 
-			// var result= await stripe.paymentIntents.create({
-			// 	amount: totalCost*100,//AMOUNT IN CENTS
-			// 	currency: 'AED',
-			// 	description: `Order #${orderId} payment`,
-			// 	payment_method: req.body.id,
-			// 	confirm: true
-			// })
 			var customer = await Customer.findOne({email: req.body.customer.email})
 			if(!customer){
 				customer=  await Customer.create({
@@ -106,6 +90,7 @@ exports.createOrder = async function(req,res){
 							phone: req.body.customer.phone.toString()
 						})
 			}
+			const orderId = nanoid(15)
 			let order = await Order.create({
 				invoiceNo: orderId,
                 items: orderObjects, 
@@ -116,19 +101,36 @@ exports.createOrder = async function(req,res){
 				paymentType: req.body.payment,
 				shipping: req.body.shipping
             });
+			currentId= order._id.toString()
+			customer.latestUpdate= new Date()
+			customer.orders.push(order._id)
+
+			await order.save()
+			await customer.save();
+			console.log('even bordered coming here')
+			if(req.body.payment==='card'){
 			var result= await stripe.paymentIntents.create({
-				amount: req.body.shipping==='flatRate' ? (totalCost+60)*100 : totalCost*100,//AMOUNT IN CENTS
+				amount: req.body.shipping==='flatRate' ? (totalCost+6000) : totalCost,//AMOUNT IN CENTS
 				currency: 'AED',
 				description: `Order #${orderId} payment`,
 				payment_method: req.body.id,
 				confirm: true
 			})
-			// console.log(result)
-			customer.latestUpdate= new Date()
-			customer.orders.push(order._id)
-			order.populate("customer",{fullName: true})
-			await customer.save();
+			console.log(result.client_secret)
+		   }
+			// console.log(result.last_payment_error)
+			order.transactionStatus={status:'Success', message: 'successful transaction'}
 			await order.save()
+			console.log(countInStockAfterPurchase)
+
+			//Update countInStock
+			for(var item of req.body.items){
+				
+				let remainingInStock =countInStockAfterPurchase.filter(obj=>obj._id.toString()===item.product.toString())[0]
+				console.log(remainingInStock)
+				await Product.findOneAndUpdate({_id: item.product}, {...req.body, countInStock: remainingInStock.remainingInStock}, {new: true})
+			}
+			
 			//======================Transaction end=================//
 			//==============generating invoice=====================//
 			var invoiceData = {
@@ -143,7 +145,7 @@ exports.createOrder = async function(req,res){
 				paid: totalCost,
 				invoice_nr: order.invoiceNo
 			};
-		
+		console.log(req.body.customer.firstName)
 		//  await createInvoice(invoiceData/*,'invoice.pdf'*/, req.body.customer.email, req.body.customer.fullName)
 		
 		var message = await sendEmail('noreply@the-aleph.com', 
@@ -153,35 +155,38 @@ exports.createOrder = async function(req,res){
 "<div style='padding:20px auto;'>"+
   "<div style='padding:30px; background-color:#ededed;color:black;'>"+
 	"<img src='cid:logo.png' width='40px'>"+
-		"<h3 style='font-size:1.25rem; margin-top:0px;'>Dear "+req.body.customer.fullName+",</h3>"+
+		"<h3 style='font-size:1.25rem; margin-top:0px;'>Dear "+req.body.customer.firstName+",</h3>"+
         "<p style='font-size:1.25rem; margin:0px auto;'>Thank you for your purchase</p>"+
 		"<p style='font-size:1.25rem; margin:0px auto;'>Please find attached the invoice for the purchase.</p>"+
-		"</div></div></div>"/*, attch*/);
+		"</div></div></div>",/*, attch*/);
 	 console.log(message)
 return res.status(200).json(order);
 
 		} catch(err){
-			console.log(err)
-			// if(err.Error){
-			// 	return res.status(err.Error.statusCode || 500).json({
-			// 		error: {
-			// 			message: err.Error || "Oops something went wrong." 
-			// 		}
-			// 	})
-			// }
-			if(err.raw.message){//error from stripe
-				
+			// console.log(err)
+			try{
+			if(err.raw.message){
+				console.log(err.raw.message)
+
+				const order= await Order.findById( currentId)
+				 order.transactionStatus= {status:'Fail', message: err.raw.message}
+				 await order.save()
 				return res.status(err.raw.statusCode || 500).json({message: err.raw.message || "Oops something went wrong."})
 			}
-			return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
+				const order= await Order.findById( currentId)
+				order.transactionStatus= {status:'Fail', message: err.message}
+				await order.save()
+				// await Order.findOneAndUpdate({_id: currentId}, {...req.body, transactionStatus:{status:'Fail', message: err.message}}, {new: true})
+				return res.status(err.status || 500).json({message: err.message || "Oops something went wrong."})
+		}catch(err){
+			console.log(err)
+		}
 		}
 
 }
 
 exports.getOrdersCount = async function(req,res){
-	
 	try{
-           
 			  var count= await Order.find().countDocuments()
 				return res.status(200).json({totalorders: count});
 				
@@ -192,15 +197,17 @@ exports.getOrdersCount = async function(req,res){
 }
 exports.getOrders = async function(req,res){
 	try{
-           console.log(req.query)
 			const qParams=req.query
 			const page= +qParams.page || 1;
-			const skipValue= (page-1)* qParams.ordersPerPage;
+			const skipValue= (page-1)* Number(qParams.ordersPerPage);
 			var query={}
 			if(qParams.searchTerm){
-				qParams.searchTerm ? query._id=qParams.searchTerm : null
+				qParams.searchTerm ? query.invoiceNo=qParams.searchTerm : null
 			}
-			let orders= await Order.find({...query}).skip(skipValue).limit(Number(qParams.orderPerPage))
+			if(qParams.status && qParams.status!=='allOrders'){
+				qParams.status ? query.status=qParams.status : null 
+			}
+			let orders= await Order.find({...query}).sort({createdAt: "desc"}).skip(skipValue).limit(Number(qParams.ordersPerPage))
 			let count = await Order.find({...query}).countDocuments()
 			return res.status(200).json({orders, count});
 		} catch(err){
@@ -248,8 +255,15 @@ exports.updateOrder = async function(req,res){
 
 exports.deleteOrder = async function(req,res){
 	try{
-
+            
 			let foundOrder = await Order.findById(req.params.orderId) 
+			let foundCustomer= await Customer.findById(foundOrder.customer)
+			console.log(foundOrder._id)
+			console.log(typeof foundCustomer.orders[0])
+			console.log(foundCustomer.orders)
+			console.log(foundCustomer.orders.filter(order=>order.toString()!==foundOrder._id.toString()))
+			foundCustomer.orders= foundCustomer.orders.filter(order=>order.toString()!==foundOrder._id.toString())
+			await foundCustomer.save()
 			await foundOrder.remove();
 		    return res.status(200).json({message: 'Order deleted'});
 		
@@ -270,3 +284,4 @@ exports.deleteManyOrders = async function(req,res){
 		}
 
 }
+

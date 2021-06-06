@@ -1,91 +1,78 @@
 .navbar{
     width: 100%;
-    height:100px;
-    background-color: #171717;
+    background-color: #ffffff;
+    margin: 0px auto;
+    text-align: center;
+}
+.navbar__container{
+    max-width: 1300px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 1rem;
-    z-index: 50;
+    padding: 0px 1.5rem; 
+    margin: 0px auto;
 }
 
-.navbar__logo a{
-    text-decoration: none;
-}
-.navbar__logo h2{
-
-  color: #f4f4f4;
-  font-size: 1.4rem;
-  cursor: pointer;
-}
 
 .navbar__links {
     display: flex;
     list-style: none;
     align-items: center;
+    /* margin: 0px; */
 }
 
 /*STYLING ALL OF THE lis IN navbar__links */
 .navbar__links >li {
     padding-left: 1.5rem;
 }
-
-.navbar__links > li > a {
+.navbar__logo a,
+.navbar__links > li > a,  
+.navbar__links > li > p{
     text-decoration: none;
-    color: #f4f4f4;
-    font-size: 1.2rem;
-    display: flex;/*This is so the cart icon and the count can be next to eachother*/
+    color: var(--greyish-color);
+    display: flex;
     align-items: center;
+    cursor: pointer;
+    padding-top: 1.3rem;
+    padding-bottom: 0.6rem;
+    transition: 0.4s;
+    border-bottom: 4px solid white;
 }
+.navbar__logo a{
+    letter-spacing: 3px;
+    font-size: 2rem;
+    color: var(--reddish-color);
+    border:none;
+    padding:0px;
+}
+.navbar__links > li > a:hover,
+.navbar__links > li > p:hover{
+    border-bottom:4px solid var(--reddish-color);
+}
+#cart__link:hover{
+    border-bottom: 4px solid white;
+    color: var(--reddish-color);
+}
+
+
 .navbar__links > li > a > span {
     display: flex;
     align-items: center;
     margin-left: 8px;
 }
 
-.cart__link{
-    padding: 10px;
-    background: #333;
-    border-radius: 8px;
-}
 
-.cart__link:hover{
-    background: #ad0207;
-    color: #f4f4f4;
+#cart__link > span{
+  font-size: 1rem;
+  transition: 0.4s;
 }
-
-.cartlogo__badge{
-    width: 30px;
-    height: 30px;
-    background: #f4f4f4;
-    border-radius: 50%;
-    margin-left: 8px;
-    color: #171717;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 1rem;
+#cart__link > span:hover{
+    color: var(--reddish-color);
+  }
+#currently__cart{
+    color: var(--reddish-color);
+    background-color: white;
 }
-
-.hamburger__menu{
-    width: 30px;
-    height: 30px;
-    display: none;
-    align-items: center;
-    cursor: pointer;
-}
-
-.hamburger__menu > div{
-    width: 100%;
-    height: 3px;
-    background-color: #f4f4f4;
-}
-
-.hamburger__menu:hover > div{
-    background: #ad0207;
-}
-
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 960px){
@@ -100,7 +87,7 @@
 }
 
 @media (max-width: 500px){
-    .navbar__logo h2{
-        font-size: 1rem;
+    .navbar__logo a{
+        font-size: 1.5rem;
       }
 }

@@ -1,6 +1,6 @@
 const express= require('express'),
 	  router= express.Router(),
-	//   {ensureCorrectUser} = require('../middleware/auth'),
+	  {ensureCorrectUser,loginRequired} = require('../middleware/auth'),
 	  
 	  
 	  { getOrders,
@@ -10,24 +10,25 @@ const express= require('express'),
 	    createOrder,
         updateOrder,
 		deleteOrder, 
-	    deleteManyOrders }= require('../controller/orderController');
+	    deleteManyOrders}= require('../controller/orderController');
 
 //prefix-- /api/appointments
 router.route("/")
-.get(getOrders)
+.get(loginRequired, getOrders)
 .post(createOrder)
-.delete(deleteManyOrders);
+.delete(loginRequired, deleteManyOrders);
 
 router.route("/totalOrders")
-.get(getOrdersCount)
+.get(loginRequired, getOrdersCount)
+
 
 router.route('/customer/:customerId')
-.get(getCustomerOrders)
+.get(loginRequired, getCustomerOrders)
 
 router.route("/:orderId")
-.get(getOrder)
-.put(updateOrder)
-.delete(deleteOrder);
+.get(loginRequired, getOrder)
+.put(loginRequired, updateOrder)
+.delete(loginRequired, deleteOrder);
 
 
 

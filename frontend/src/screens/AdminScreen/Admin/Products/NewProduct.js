@@ -7,7 +7,7 @@ import {  isEmptyField, isNumber  } from '../../../../utils/helpers'
 
 // import { acceptedEmail, isEmptyField, isNumber } from '../../../../utils/helpers'
 // import axios from 'axios'
-import useData from "../../../../utils/useData"
+import {useProductData} from "../../../../utils/hooks"
 
 //COMPONENT
 //COMPONENTS
@@ -18,10 +18,8 @@ import Invalid from '../../../../components/Invalid/Invalid';
 Modal.setAppElement("#root");
 
 const NewProduct =({show, create, cancel}) => {
-    const {brands, categories} = useData()
+    const {brands, categories} = useProductData()
     const [previewSources, setPreviewSources]= useState([])
-	const [selectedFiles, setSelectedFiles]= useState([]);
-	// const [fileName, setFileName]= useState('Choose File');
 useEffect(()=>{
     setError({
         requireName: false,
@@ -330,9 +328,9 @@ useEffect(()=>{
                                             multiple/>
                                              <Required field={"Images"} display={error.requireImages} />
                                             {previewSources && 
-                                            previewSources.map(source=>{
-                                               return <div style={{marginTop: '10px'}}>
-                                                    <img src={source} width='50px'/>
+                                            previewSources.map((source,index)=>{
+                                               return <div style={{marginTop: '10px'}} key={index}>
+                                                    <img src={source} width='50px' alt=''/>
                                                 </div>
                                             })
                                             }

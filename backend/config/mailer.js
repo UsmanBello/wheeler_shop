@@ -9,7 +9,7 @@ const mailgun= require('mailgun-js')({apiKey: process.env.MAILGUN_API_KEY,
 // 						 key: process.env.MAILGUN_API_KEY})
 // const mailgun= mailgunLoader
 // var  attachmentA = new mailgun.Attachment({ filename: `invoice.pdf`, contentType: "application/pdf"});
-const sendEmail=  (from, to, subject, content, contentHtml, filePath)=>{
+const sendEmail=  (from, to, subject, content, contentHtml/*, filePath*/)=>{
 	// try{
 	let data={
 		from,
@@ -17,7 +17,7 @@ const sendEmail=  (from, to, subject, content, contentHtml, filePath)=>{
 		subject,
 		text: content,
 		html: contentHtml,
-		attachment: filePath
+		// attachment: filePath
 	}
 	return mailgun.messages().send(data)
 // 	message= await mg.messages().create(process.env.MAILGUN_DOMAIN, data)

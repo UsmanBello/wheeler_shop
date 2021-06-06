@@ -29,11 +29,15 @@ const Products =({location, history}) => {
     
     const dispatch= useDispatch()
     const getProducts = useSelector(state=>state.product)
-    const { products, productsCount, loading, error} = getProducts
+    // const { products, productsCount, loading, error} = getProducts
+    const { products, productsCount, loadingProducts, loadingProductsCount, error} = getProducts
+
     const { fetchedProducts, count} = products
+    
     //PAGINATE
-    const [pageNumber, setPageNumber]= useState(1)
+    const [pageNumber, setPageNumber]= useState(queryParams.page ? Number(queryParams.page) : 1)
     const [productsPerPage, setProductsPerPage]=useState(15)
+
     //OTHER
     const [searchInput, setSearchInput]= useState('')
     const [brandInput, setBrandinput] = useState('')
@@ -43,34 +47,24 @@ const Products =({location, history}) => {
     const [toggleDeleteProduct, setToggleDeleteProduct]= useState(false)
     const [productToBeActedOn, setProductToBeActedOn]= useState({})
     const [sortChoice, setSortChoice] = useState('latest')
-
-    console.log(location)
+    // console.log('From Query- '+queryParams.page +' \n From state- '+pageNumber)
+    console.log(queryParams)
+  
     useEffect(()=>{
-        dispatch(getProductsCount())
-      },[dispatch])
-
-    //WHEN QUERY STRING CHANGES, START FROM PAGE 1
-    useEffect(()=>{
-    var newQueryParams= {
-        ...queryParams,
-        page: 1
-    }
-    history.push({
-        pathname: '/admin',
-        search: queryString.stringify(newQueryParams)
-    })
-        setPageNumber(1)
-    },[queryParams.q, queryParams.brand, queryParams.subCategory])
-
+      setPageNumber(queryParams.page ? Number(queryParams.page) : 1)
+    },[queryParams.page])
     useEffect(()=>{
         var sortTerm= extractTerm(queryParams.sort) === '' ? 'latest' : extractTerm(queryParams.sort)
         var searchTerm= extractTerm(queryParams.q)
         var brandFilter= extractTerm(queryParams.brand)
         var categoryFilter= extractTerm(queryParams.category)
         var subCategoryFilter= extractTerm(queryParams.subCategory)
-        dispatch(listProducts(searchTerm, brandFilter, categoryFilter, subCategoryFilter,productsPerPage, pageNumber , sortTerm))
+        var outOfStock=extractTerm(queryParams.outOfStock)
+        dispatch(listProducts(searchTerm, brandFilter, categoryFilter, subCategoryFilter,productsPerPage, pageNumber , sortTerm, outOfStock))
     },[dispatch, search, productsPerPage, pageNumber])//search
-  
+    useEffect(()=>{
+      dispatch(getProductsCount())
+    },[dispatch])
     //TO Helper function
     var pageCount= Math.ceil(count/productsPerPage)
 
@@ -84,15 +78,11 @@ const Products =({location, history}) => {
       }
     }
     const changePage =({selected})=>{ 
-      console.log(selected)
       setPageNumber(selected+1)
-      var newQueryParams= {
-        ...queryParams,
-        page:selected+1,
-      }
+      
       history.push({
         pathname: '/admin',
-        search: queryString.stringify(newQueryParams)
+        search: queryString.stringify({ ...queryParams, page:selected+1})
     })
     }
     //======================================//
@@ -133,89 +123,68 @@ const Products =({location, history}) => {
         if(e.keyCode !== 13){
         return 
     }
-    var newQueryParams= {
-      ...queryParams,
-      q: searchInput
-    }
     setSearchInput('')
+    delete queryParams.outOfStock
         history.push({
             pathname: '/admin',
-            search: queryString.stringify(newQueryParams)
+            search: queryString.stringify({...queryParams, q: searchInput,page: 1})
         })
   }
   
   const handleSearch=()=>{
-  
-        var newQueryParams= {
-          ...queryParams,
-          q: searchInput
-        }
         setSearchInput('')
+        delete queryParams.outOfStock
         history.push({
             pathname: '/admin',
-            search: queryString.stringify(newQueryParams)
+            search: queryString.stringify({...queryParams, q: searchInput, page: 1 })
         })
       
   }
 
   const clearSearch=()=>{
-    var newQueryParams= {
-        ...queryParams,
-        q: '',
-        brand:'',
-        Category:'',
-        subCategory:''
-      }
       setSearchInput('')
       history.push({
           pathname: '/admin',
-          search: queryString.stringify(newQueryParams)
+          search: queryString.stringify({admin_option: 'products'})
       })
   }
   //====================================================================\\
 
   //================================== FILTER FUNCTION =====================================\\
 
-  const handleBrandChange=(e)=>{
-    setBrandinput(e.target.value)
-    var newQueryParams= {
-      ...queryParams,
-      brand: e.target.value
-    }
+  const handleBrandChange=(value)=>{
+    setBrandinput(value)
+    delete queryParams.outOfStock
     history.push({
       pathname: '/admin',
-      search: queryString.stringify(newQueryParams)
+      search: queryString.stringify({ ...queryParams, brand: value, page: 1})
   })
   }
-  const handleCategoryChange=(e)=>{
-    setCategoryInput(e.target.value)
-    var newQueryParams= {
-      ...queryParams,
-      category: e.target.value,
-      subCategory: ''
-    }
+  const handleCategoryChange=(value)=>{
+    setCategoryInput(value)
+    // var newQueryParams= {
+    //   ...queryParams,
+    //   category: e.target.value,
+    //   // subCategory: '',
+    //   page: 1
+    // }
+    delete queryParams.outOfStock
     history.push({
       pathname: '/admin',
-      search: queryString.stringify(newQueryParams)
+      search: queryString.stringify({ ...queryParams, category: value, /* subCategory: '',*/ page: 1})
   })
   }
 
-  const handleSetRowPerPage=(e)=>{
-    console.log(e.target.value)
-      setProductsPerPage(e.target.value)
+  const handleSetRowPerPage=(value)=>{
+      setProductsPerPage(value)
   }
   //===================================================================================\\
   //========================================SORTING FUNCTION ================================\\
 const handleSortSelect=(value)=>{
-  console.log(value)
   setSortChoice(value)
-  var newQueryParams= {
-    ...queryParams,
-    sort: value
-  }
   history.push({
     pathname: '/admin',
-    search: queryString.stringify(newQueryParams)
+    search: queryString.stringify({ ...queryParams, sort: value, page: 1 })
 })
 }
 //==========================================================================================\\
@@ -244,21 +213,21 @@ const handleSortSelect=(value)=>{
                        handleSortSelect={handleSortSelect}/>
                      </div>
 
+                     { loadingProducts && loadingProductsCount ? <h2>Loading</h2> : error ? <h2>{error}</h2> :
+                    <>
+                    <div className="products__table__container">
                      
 
                      {count < productsCount &&
                      <div  className='no__results'>
                         <p>{products.count}{" "}{products.count > 1 ? 
                         "results found." : "result found."}{" "}
-                        <span className='clear__Search' onClick={()=>{clearSearch()}}>
+                        <span className='clear__Search' onClick={()=>clearSearch()}>
                             Clear search
                             </span>
                         </p>
                         </div>} 
 
-                    { loading ? <h2>Loading</h2> : error ? <h2>{error}</h2> :
-                    
-                     <div className="products__table__container">
                             <table className="products__table" border="0" cellSpacing="0" cellPadding="0"> 
                             <thead>
                                 <tr className='table__row'>
@@ -284,7 +253,7 @@ const handleSortSelect=(value)=>{
                                 }
                             </tbody>
                             </table>
-                     </div>
+                     </div></>
                       
 }
 {count > productsPerPage  &&
